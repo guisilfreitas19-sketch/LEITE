@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeitePro v4.2 | Ponto de Equilíbrio</title>
+  <title>LeitePro v4.3 | Oficial</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #020617; color: #f8fafc; font-family: sans-serif; overflow: hidden; }
@@ -13,7 +13,6 @@
     .label-text { color: #94a3b8; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.2rem; display: block; }
     .status-verde { color: #22c55e; }
     .status-vermelho { color: #ef4444; }
-    .bg-alerta { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
   </style>
 </head>
 <body class="p-4 md:p-6">
@@ -36,19 +35,19 @@
         <div class="space-y-3">
           <div class="grid grid-cols-2 gap-2">
             <div><label class="label-text text-[10px]">Silo KG</label><input id="siloQtd" type="number" value="15" oninput="executarCalculo()" class="input-field"></div>
-            <div><label class="label-text text-[10px]">Preço Silo</label><input id="siloPreco" type="text" value="R$ 0,45" oninput="fMoeda(this)" class="input-field"></div>
+            <div><label class="label-text text-[10px]">Preço Silo</label><input id="siloPreco" type="text" value="R$ 0,20" oninput="fMoeda(this)" class="input-field"></div>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <div><label class="label-text text-[10px]">Soja KG</label><input id="sojaQtd" type="number" value="2" oninput="executarCalculo()" class="input-field"></div>
-            <div><label class="label-text text-[10px]">Preço Soja</label><input id="sojaPreco" type="text" value="R$ 2,00" oninput="fMoeda(this)" class="input-field"></div>
+            <div><label class="label-text text-[10px]">Preço Soja</label><input id="sojaPreco" type="text" value="R$ 1,80" oninput="fMoeda(this)" class="input-field"></div>
           </div>
           <div class="grid grid-cols-2 gap-2">
             <div><label class="label-text text-[10px]">Trigo KG</label><input id="trigoQtd" type="number" value="2" oninput="executarCalculo()" class="input-field"></div>
-            <div><label class="label-text text-[10px]">Preço Trigo</label><input id="trigoPreco" type="text" value="R$ 1,50" oninput="fMoeda(this)" class="input-field"></div>
+            <div><label class="label-text text-[10px]">Preço Trigo</label><input id="trigoPreco" type="text" value="R$ 1,00" oninput="fMoeda(this)" class="input-field"></div>
           </div>
           <div class="pt-2 border-t border-white/10">
             <label class="label-text text-orange-400">Medicamentos/Outros (R$/Dia)</label>
-            <input id="extraCusto" type="text" value="R$ 0,50" oninput="fMoeda(this)" class="input-field !text-orange-400">
+            <input id="extraCusto" type="text" value="R$ 0,25" oninput="fMoeda(this)" class="input-field !text-orange-400">
           </div>
         </div>
       </div>
@@ -56,7 +55,7 @@
 
     <main class="lg:col-span-8 flex flex-col gap-5">
       <div class="glass-card p-6 flex flex-col items-center justify-center relative flex-1 min-h-[300px]">
-        <span class="label-text tracking-[0.4em] mb-1 text-zinc-500 text-center">Lucro Diário Líquido do Lote</span>
+        <span class="label-text tracking-[0.4em] mb-1 text-zinc-500">Lucro Diário Líquido</span>
         <div class="flex items-baseline">
           <span class="text-3xl text-zinc-700 font-light mr-3">R$</span>
           <span id="resLucroDia" class="text-[9rem] font-black leading-none tracking-tighter">0,00</span>
@@ -90,12 +89,6 @@
           <p id="resFaturaMes" class="text-5xl font-black mt-1 text-zinc-400">R$ 0,00</p>
         </div>
       </div>
-
-      <div class="glass-card p-4 grid grid-cols-3 gap-3 text-center">
-        <div><p class="label-text">Custo Real/Litro</p><p id="resCustoL" class="font-bold text-xl text-red-400">R$ 0,00</p></div>
-        <div><p class="label-text text-yellow-500">Sobra Real/Litro</p><p id="resSobraL" class="font-bold text-xl text-yellow-500">R$ 0,00</p></div>
-        <div><p class="label-text">Custo do Trato Mensal</p><p id="resCustoMes" class="font-bold text-xl">R$ 0,00</p></div>
-      </div>
     </main>
   </div>
 
@@ -113,6 +106,33 @@
       if (!v || v === "") return 0;
       let n = v.replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
       return parseFloat(n) || 0;
+    }
+
+    function salvarDados() {
+        const dados = {
+            nV: document.getElementById('numVacas').value,
+            mV: document.getElementById('mediaVaca').value,
+            pV: document.getElementById('vendaPreco').value,
+            sP: document.getElementById('siloPreco').value,
+            jP: document.getElementById('sojaPreco').value,
+            tP: document.getElementById('trigoPreco').value,
+            eC: document.getElementById('extraCusto').value
+        };
+        localStorage.setItem('leiteProDados', JSON.stringify(dados));
+    }
+
+    function carregarDados() {
+        const salvo = localStorage.getItem('leiteProDados');
+        if (salvo) {
+            const d = JSON.parse(salvo);
+            document.getElementById('numVacas').value = d.nV;
+            document.getElementById('mediaVaca').value = d.mV;
+            document.getElementById('vendaPreco').value = d.pV;
+            document.getElementById('siloPreco').value = d.sP;
+            document.getElementById('sojaPreco').value = d.jP;
+            document.getElementById('trigoPreco').value = d.tP;
+            document.getElementById('extraCusto').value = d.eC;
+        }
     }
 
     function executarCalculo() {
@@ -133,17 +153,11 @@
       const faturaLoteDia = tLitrosDia * pV;
       const lucroLoteDia = faturaLoteDia - gastoLoteDia;
       
-      const custoLitro = tLitrosDia > 0 ? (gastoLoteDia / tLitrosDia) : 0;
-      const sobraLitro = pV - custoLitro;
-
-      // CÁLCULO PONTO DE EQUILÍBRIO (BREAK-EVEN)
-      // Litros necessários p/ pagar o custo de 1 vaca
       const breakEvenLitros = pV > 0 ? (custoIndividual / pV) : 0;
       const sobraLitrosVaca = mV - breakEvenLitros;
 
       const f = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
       
-      // Interface
       document.getElementById('resBreakEven').innerText = breakEvenLitros.toLocaleString('pt-BR', f) + " L";
       document.getElementById('resSobraVaca').innerText = (sobraLitrosVaca > 0 ? "+" : "") + sobraLitrosVaca.toLocaleString('pt-BR', f) + " L";
       document.getElementById('resSobraVaca').className = "text-xl font-black " + (sobraLitrosVaca >= 0 ? "text-yellow-500" : "text-red-500");
@@ -156,13 +170,11 @@
       document.getElementById('resLucroMes').className = "text-5xl font-black mt-1 " + (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho");
       
       document.getElementById('resFaturaMes').innerText = "R$ " + (faturaLoteDia * 30).toLocaleString('pt-BR', f);
-      document.getElementById('resCustoMes').innerText = "R$ " + (gastoLoteDia * 30).toLocaleString('pt-BR', f);
-
-      document.getElementById('resCustoL').innerText = "R$ " + custoLitro.toLocaleString('pt-BR', f);
-      document.getElementById('resSobraL').innerText = "R$ " + (sobraLitro > 0 ? sobraLitro : 0).toLocaleString('pt-BR', f);
+      
+      salvarDados();
     }
 
-    window.onload = function() { setTimeout(executarCalculo, 300); };
+    window.onload = function() { carregarDados(); setTimeout(executarCalculo, 300); };
   </script>
 </body>
 </html>
