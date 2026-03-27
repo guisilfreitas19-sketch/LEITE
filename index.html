@@ -3,138 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dairy Manager - Poços de Caldas</title>
+    <title>Dairy Management - Eficiência por Animal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .card-bg { background-color: #121212; border: 1px solid #27272a; }
-        input:focus { border-color: #22c55e !important; box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); }
-        /* Esconde setas do input number */
+        body { background-color: #050505; color: #e4e4e7; font-family: 'Inter', sans-serif; }
+        .card-panel { background-color: #0f0f0f; border: 1px solid #27272a; border-radius: 1rem; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .input-banco { background-color: #18181b; border: 1px solid #3f3f46; color: #fff; text-align: right; font-family: monospace; }
+        .input-banco:focus { border-color: #22c55e; outline: none; }
     </style>
 </head>
-<body class="bg-black text-gray-100 h-screen overflow-hidden font-sans">
+<body class="h-screen overflow-hidden flex flex-col">
 
-    <header class="h-16 flex items-center justify-between px-6 bg-zinc-900 border-b border-zinc-800">
-        <div class="flex items-center gap-6">
-            <h1 class="text-green-500 font-black tracking-widest text-xl italic">MILK-DASH</h1>
-            <select id="selectFazenda" onchange="trocarFazenda()" class="bg-zinc-800 text-white px-3 py-1 rounded border border-zinc-700 outline-none">
-                <option value="fazenda_01">FAZENDA SANTA LUZIA</option>
-                <option value="fazenda_02">FAZENDA BOA VISTA</option>
+    <header class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-900/50">
+        <div class="flex items-center gap-4">
+            <span class="text-green-500 font-black italic tracking-tighter text-xl">MILK PRO</span>
+            <select id="fazenda" class="bg-transparent border-none text-zinc-400 font-bold text-sm uppercase cursor-pointer outline-none hover:text-white">
+                <option value="fazenda1">Fazenda Santa Luzia</option>
+                <option value="fazenda2">Fazenda Boa Vista</option>
             </select>
         </div>
-        <div id="dataDisplay" class="text-zinc-500 font-mono text-sm uppercase"></div>
+        <div id="relogio" class="text-zinc-500 text-xs font-mono uppercase tracking-widest"></div>
     </header>
 
-    <main class="grid grid-cols-12 gap-4 p-4 h-[calc(100vh-64px)]">
+    <main class="flex-1 grid grid-cols-12 gap-4 p-4">
         
-        <section class="col-span-3 card-bg rounded-xl p-5 flex flex-col gap-4">
-            <h2 class="text-zinc-500 text-xs font-bold uppercase tracking-wider">Entradas do Dia (R$)</h2>
-            
+        <section class="col-span-3 card-panel p-5 flex flex-col gap-6">
+            <div>
+                <h2 class="text-zinc-500 text-[10px] font-black uppercase mb-4 tracking-widest">Métricas do Rebanho</h2>
+                <label class="text-[10px] text-zinc-400 block mb-1 uppercase">Média de Leite (L / Vaca)</label>
+                <input type="text" id="mediaLeite" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-3 rounded-lg text-2xl">
+            </div>
+
             <div class="space-y-4">
-                <div>
-                    <label class="text-[10px] text-zinc-400 block mb-1">PRODUÇÃO (LITROS)</label>
-                    <input type="text" id="prodLeite" oninput="formatarMoeda(this); calcular()" placeholder="0,00" class="w-full bg-zinc-800 p-3 rounded-lg text-2xl font-mono text-right outline-none border border-transparent">
-                </div>
-                <div>
-                    <label class="text-[10px] text-zinc-400 block mb-1">GASTO SOJA (R$)</label>
-                    <input type="text" id="gastoSoja" oninput="formatarMoeda(this); calcular()" placeholder="0,00" class="w-full bg-zinc-800 p-3 rounded-lg text-xl font-mono text-right outline-none border border-transparent text-yellow-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-zinc-400 block mb-1">GASTO TRIGO (R$)</label>
-                    <input type="text" id="gastoTrigo" oninput="formatarMoeda(this); calcular()" placeholder="0,00" class="w-full bg-zinc-800 p-3 rounded-lg text-xl font-mono text-right outline-none border border-transparent text-yellow-500">
-                </div>
-                <div>
-                    <label class="text-[10px] text-zinc-400 block mb-1">GASTO SILO/REB (R$)</label>
-                    <input type="text" id="gastoSilo" oninput="formatarMoeda(this); calcular()" placeholder="0,00" class="w-full bg-zinc-800 p-3 rounded-lg text-xl font-mono text-right outline-none border border-transparent text-yellow-500">
-                </div>
-            </div>
-
-            <div class="mt-auto p-4 bg-zinc-900 rounded-lg border border-zinc-800 text-center">
-                <span class="text-[10px] text-zinc-500 block italic">DADOS SALVOS AUTOMATICAMENTE</span>
-            </div>
-        </section>
-
-        <section class="col-span-6 flex flex-col gap-4">
-            <div class="flex-1 card-bg rounded-xl flex flex-col items-center justify-center relative overflow-hidden">
-                <div class="absolute top-4 left-4 text-[10px] font-bold text-zinc-600 uppercase">Custo de Produção / Litro</div>
-                <div class="text-zinc-600 text-4xl font-light">R$</div>
-                <div id="resCustoLitro" class="text-[10rem] font-black leading-none tracking-tighter text-white">0,00</div>
-                <div id="indicadorCor" class="mt-6 w-3/4 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                    <div id="barraProgresso" class="h-full w-0 transition-all duration-500"></div>
-                </div>
-            </div>
-
-            <div class="h-32 grid grid-cols-2 gap-4">
-                <div class="card-bg rounded-xl p-4 flex flex-col justify-center">
-                    <span class="text-zinc-500 text-[10px] uppercase">Gasto Total Dia</span>
-                    <span id="resTotalGasto" class="text-3xl font-mono text-white">R$ 0,00</span>
-                </div>
-                <div class="card-bg rounded-xl p-4 flex flex-col justify-center border-l-4 border-l-blue-600">
-                    <span class="text-zinc-500 text-[10px] uppercase">Ponto de Equilíbrio (Litros)</span>
-                    <span id="resPontoEq" class="text-3xl font-mono text-white">0 L</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="col-span-3 flex flex-col gap-4">
-            <div class="flex-1 card-bg rounded-xl p-5">
-                <h2 class="text-zinc-500 text-xs font-bold uppercase mb-4">Manejo Crítico</h2>
-                <div class="space-y-3">
-                    <div class="p-3 bg-red-950/30 border border-red-900 rounded text-xs text-red-200">
-                        <strong>CARÊNCIA:</strong> Vaca 102 (Suj. Antibiótico)
+                <h2 class="text-zinc-500 text-[10px] font-black uppercase mb-2 tracking-widest">Consumo e Preços</h2>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">SOJA (KG/VACA)</label>
+                        <input type="text" id="kgSoja" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
                     </div>
-                    <div class="p-3 bg-blue-950/30 border border-blue-900 rounded text-xs text-blue-200">
-                        <strong>ESTOQUE:</strong> Soja abaixo de 200kg
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG SOJA</label>
+                        <input type="text" id="precoSoja" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">TRIGO (KG/VACA)</label>
+                        <input type="text" id="kgTrigo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG TRIGO</label>
+                        <input type="text" id="precoTrigo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">SILAGEM (KG/VACA)</label>
+                        <input type="text" id="kgSilo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
+                    </div>
+                    <div>
+                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG SILO</label>
+                        <input type="text" id="precoSilo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
                     </div>
                 </div>
             </div>
+
+            <div class="mt-auto p-3 bg-zinc-900/50 rounded-lg text-center border border-zinc-800">
+                <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Cálculo de Precisão Alimentar</p>
+            </div>
         </section>
-    </main>
-
-    <script>
-        // Máscara de Moeda (Estilo Banco)
-        function formatarMoeda(i) {
-            let v = i.value.replace(/\D/g,'');
-            v = (v/100).toFixed(2) + '';
-            v = v.replace(".", ",");
-            v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
-            v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
-            i.value = v;
-        }
-
-        function converterParaFloat(valor) {
-            if(!valor) return 0;
-            return parseFloat(valor.replace(/\./g, '').replace(',', '.'));
-        }
-
-        function calcular() {
-            const leite = converterParaFloat(document.getElementById('prodLeite').value);
-            const soja = converterParaFloat(document.getElementById('gastoSoja').value);
-            const trigo = converterParaFloat(document.getElementById('gastoTrigo').value);
-            const silo = converterParaFloat(document.getElementById('gastoSilo').value);
-
-            const totalGasto = soja + trigo + silo;
-            const custoLitro = leite > 0 ? (totalGasto / leite) : 0;
-
-            // Atualiza o Dashboard
-            document.getElementById('resCustoLitro').innerText = custoLitro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            document.getElementById('resTotalGasto').innerText = "R$ " + totalGasto.toLocaleString('pt-BR', {minimumFractionDigits: 2});
-            
-            // Ponto de Equilíbrio (Estimativa baseada em Leite a R$ 2.40)
-            const pe = totalGasto / 2.40;
-            document.getElementById('resPontoEq').innerText = Math.ceil(pe) + " L";
-
-            // Feedback Visual na Barra
-            const barra = document.getElementById('barraProgresso');
-            if(custoLitro > 0) {
-                barra.style.width = "100%";
-                barra.className = custoLitro > 2.10 ? "h-full bg-red-600" : "h-full bg-green-600";
-            }
-        }
-
-        // Data de Poços de Caldas
-        const opcoes = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-        document.getElementById('dataDisplay').innerText = new Date().toLocaleDateString('pt-BR', opcoes);
-    </script>
-</body>
-</html>
