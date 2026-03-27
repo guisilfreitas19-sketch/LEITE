@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeitePro v5.4 | Cálculo Total</title>
+  <title>LeitePro v5.5 | Foco em Lucro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #010409; color: #f8fafc; font-family: sans-serif; min-height: 100vh; overflow: hidden; }
@@ -13,11 +13,6 @@
     .label-text { color: #8b949e; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.2rem; display: block; }
     .status-verde { color: #3fb950; }
     .status-vermelho { color: #f85149; }
-    progress { -webkit-appearance: none; appearance: none; width: 100%; height: 12px; border-radius: 6px; overflow: hidden; }
-    progress::-webkit-progress-bar { background-color: #21262d; }
-    .progress-verde::-webkit-progress-value { background-color: #3fb950; }
-    .progress-amarelo::-webkit-progress-value { background-color: #d29922; }
-    .progress-vermelho::-webkit-progress-value { background-color: #f85149; }
   </style>
 </head>
 <body id="mainBody" class="p-3">
@@ -26,7 +21,7 @@
     <header class="flex justify-between items-center pb-2 border-b border-white/5">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 bg-green-700 rounded flex items-center justify-center text-white font-black text-lg">LP</div>
-        <h1 class="text-lg font-bold">LeitePro <span class="text-green-600">v5.4</span></h1>
+        <h1 class="text-lg font-bold italic">LeitePro <span class="text-green-600">v5.5</span></h1>
       </div>
       <div class="flex gap-6 items-center bg-black/40 px-4 py-1 rounded-lg border border-white/5">
         <p id="dataAtual" class="label-text !mb-0 text-zinc-500 italic">CARREGANDO...</p>
@@ -46,7 +41,7 @@
         </div>
 
         <div class="glass-card p-4 border-l-4 border-blue-600">
-          <p class="label-text text-center text-blue-500 mb-3 italic">Dieta Individual</p>
+          <p class="label-text text-center text-blue-500 mb-3 italic">Dieta Individual (Animal/Dia)</p>
           <div class="space-y-3">
             <div class="grid grid-cols-2 gap-2">
               <div><label class="label-text">Silo (Kg)</label><input id="siloQtd" type="number" value="15" oninput="executarCalculo()" class="input-box !text-base"></div>
@@ -61,7 +56,7 @@
               <div><label class="label-text">R$ Trigo</label><input id="trigoPreco" type="text" value="R$ 1,00" oninput="fMoeda(this)" class="input-box !text-base"></div>
             </div>
             <div class="pt-2 border-t border-white/5">
-              <label class="label-text text-orange-400">Extra (Medicamento/M.O R$/Vaca)</label>
+              <label class="label-text text-orange-400">Extra (Med/Outros R$/Vaca)</label>
               <input id="extraCusto" type="text" value="R$ 0,25" oninput="fMoeda(this)" class="input-box !text-base text-orange-400">
             </div>
           </div>
@@ -69,50 +64,43 @@
       </aside>
 
       <main class="col-span-9 flex flex-col gap-3">
-        <div class="glass-card p-6 flex flex-col items-center justify-center relative min-h-[380px]">
-          <div class="absolute top-4 left-6 bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-lg">
+        <div class="glass-card p-6 flex flex-col items-center justify-center relative min-h-[410px]">
+          <div class="absolute top-4 left-6 bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-lg text-center">
             <p class="label-text text-green-500 !mb-0">Produção Lote</p>
-            <p id="totalLitros" class="text-2xl font-black">0 L/DIA</p>
+            <p id="totalLitros" class="text-3xl font-black">0 L/DIA</p>
           </div>
-          <span class="label-text tracking-[0.4em] text-zinc-500">Lucro Diário Líquido</span>
+          <span class="label-text tracking-[0.4em] text-zinc-500 text-sm">Lucro Diário Líquido</span>
           <div class="flex items-baseline">
             <span class="text-4xl text-zinc-800 font-light mr-4">R$</span>
-            <span id="resLucroDia" class="text-[11rem] font-black leading-none tracking-tighter">0,00</span>
+            <span id="resLucroDia" class="text-[12rem] font-black leading-none tracking-tighter">0,00</span>
           </div>
           <div class="flex gap-8 mt-6">
-            <div class="text-center bg-white/5 px-6 py-2 rounded-xl border border-white/5">
+            <div class="text-center bg-white/5 px-8 py-3 rounded-xl border border-white/5">
               <p class="label-text !mb-0">Ponto de Equilíbrio</p>
-              <p id="resBreakEven" class="text-xl font-bold">0.00 L</p>
+              <p id="resBreakEven" class="text-2xl font-bold">0.00 L</p>
             </div>
-            <div class="text-center bg-white/5 px-6 py-2 rounded-xl border border-white/5">
+            <div class="text-center bg-white/5 px-8 py-3 rounded-xl border border-white/5">
               <p class="label-text !mb-0">Sobra p/ Vaca</p>
-              <p id="resSobraVaca" class="text-xl font-bold">0.00 L</p>
+              <p id="resSobraVaca" class="text-2xl font-bold">0.00 L</p>
             </div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3">
-          <div class="glass-card p-4 border-b-4 border-green-600">
-            <span class="label-text text-green-500">Lucro Mensal (30 dias)</span>
-            <p id="resLucroMes" class="text-4xl font-black mt-1">R$ 0,00</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="glass-card p-5 border-b-4 border-green-600 bg-green-500/5">
+            <span class="label-text text-green-500">Lucro Mensal Estimado</span>
+            <p id="resLucroMes" class="text-5xl font-black mt-1">R$ 0,00</p>
           </div>
-          <div class="glass-card p-4 border-b-4 border-blue-600">
-            <span class="label-text text-blue-500">IOFC (Eficiência)</span>
-            <div class="flex items-center gap-3">
-                <p id="resIofcValor" class="text-3xl font-black">0.00</p>
-                <progress id="resIofcBarra" value="0" max="100" class="flex-1"></progress>
-            </div>
-          </div>
-          <div class="glass-card p-4 border-b-4 border-zinc-600">
-            <span class="label-text text-zinc-500">Faturamento Bruto</span>
-            <p id="resFaturaMes" class="text-3xl font-bold text-zinc-400 mt-1">R$ 0,00</p>
+          <div class="glass-card p-5 border-b-4 border-zinc-600 bg-white/5">
+            <span class="label-text text-zinc-500">Faturamento Bruto Mensal</span>
+            <p id="resFaturaMes" class="text-5xl font-black text-zinc-300 mt-1">R$ 0,00</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-3 bg-black/30 p-3 rounded-xl border border-white/5">
-            <div class="text-center"><span class="label-text">Custo/Litro</span><p id="resCustoL" class="text-xl font-bold text-white">R$ 0,00</p></div>
-            <div class="text-center"><span class="label-text">Sobra/Litro</span><p id="resSobraL" class="text-xl font-bold text-yellow-500">R$ 0,00</p></div>
-            <div class="text-center"><span class="label-text">Gasto Mensal Total</span><p id="resGastoM" class="text-xl font-bold text-red-500">R$ 0,00</p></div>
+        <div class="grid grid-cols-3 gap-3 bg-black/30 p-4 rounded-xl border border-white/5">
+            <div class="text-center"><span class="label-text">Custo por Litro</span><p id="resCustoL" class="text-2xl font-bold text-white">R$ 0,00</p></div>
+            <div class="text-center"><span class="label-text">Sobra por Litro</span><p id="resSobraL" class="text-2xl font-bold text-yellow-500">R$ 0,00</p></div>
+            <div class="text-center"><span class="label-text">Gasto Mensal (Insumos)</span><p id="resGastoM" class="text-2xl font-bold text-red-500">R$ 0,00</p></div>
         </div>
       </main>
     </div>
@@ -166,13 +154,28 @@
       document.getElementById('resBreakEven').innerText = be.toLocaleString('pt-BR', f) + " L";
       document.getElementById('resSobraVaca').innerText = (mV - be).toLocaleString('pt-BR', f) + " L";
 
-      const ef = cDietaV > 0 ? ((mV * pV) / cDietaV) : 0;
-      document.getElementById('resIofcValor').innerText = ef.toLocaleString('pt-BR', f);
-      const pb = document.getElementById('resIofcBarra');
-      pb.value = Math.min((ef / 2.5) * 100, 100);
-      pb.className = ef < 1 ? "progress-vermelho" : (ef < 1.4 ? "progress-amarelo" : "progress-verde");
+      document.getElementById('resLucroDia').className = "text-[12rem] font-black leading-none tracking-tighter " + (lucroD >= 0 ? 'status-verde' : 'status-vermelho');
+      
+      // Salva automático
+      const dados = { nV, mV, pV: document.getElementById('vendaPreco').value, sQ: document.getElementById('siloQtd').value, sP: document.getElementById('siloPreco').value, jQ: document.getElementById('sojaQtd').value, jP: document.getElementById('sojaPreco').value, tQ: document.getElementById('trigoQtd').value, tP: document.getElementById('trigoPreco').value, eC: document.getElementById('extraCusto').value };
+      localStorage.setItem('leiteProDados', JSON.stringify(dados));
+    }
 
-      document.getElementById('resLucroDia').className = "text-[11rem] font-black leading-none tracking-tighter " + (lucroD >= 0 ? 'status-verde' : 'status-vermelho');
+    function carregarDados() {
+        const salvo = localStorage.getItem('leiteProDados');
+        if (salvo) {
+            const d = JSON.parse(salvo);
+            document.getElementById('numVacas').value = d.nV || 20;
+            document.getElementById('mediaVaca').value = d.mV || 10;
+            document.getElementById('vendaPreco').value = d.pV || "R$ 2,20";
+            document.getElementById('siloQtd').value = d.sQ || 15;
+            document.getElementById('siloPreco').value = d.sP || "R$ 0,20";
+            document.getElementById('sojaQtd').value = d.jQ || 2;
+            document.getElementById('sojaPreco').value = d.jP || "R$ 1,80";
+            document.getElementById('trigoQtd').value = d.tQ || 2;
+            document.getElementById('trigoPreco').value = d.tP || "R$ 1,00";
+            document.getElementById('extraCusto').value = d.eC || "R$ 0,25";
+        }
     }
 
     function atualizarRelogio() {
@@ -181,9 +184,7 @@
         document.getElementById('dataAtual').innerText = agora.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' }).toUpperCase();
     }
 
-    window.onload = function() { 
-      atualizarRelogio(); setInterval(atualizarRelogio, 1000); executarCalculo(); 
-    };
+    window.onload = function() { carregarDados(); atualizarRelogio(); setInterval(atualizarRelogio, 1000); executarCalculo(); };
   </script>
 </body>
 </html>
