@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeitePro v3.9 | Gestão Ativa</title>
+  <title>LeitePro v4.0 | Correção Final</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #020617; color: #f8fafc; font-family: sans-serif; }
+    body { background-color: #020617; color: #f8fafc; font-family: sans-serif; overflow-x: hidden; }
     .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-radius: 1.5rem; }
     .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.8rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.25rem; }
-    .input-field:focus { border-color: #facc15; outline: none; }
+    .input-field:focus { border-color: #facc15; outline: none; box-shadow: 0 0 10px rgba(250, 204, 21, 0.2); }
     .label-text { color: #94a3b8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.3rem; display: block; }
     .status-verde { color: #22c55e; }
     .status-vermelho { color: #ef4444; }
@@ -21,34 +21,34 @@
     
     <aside class="lg:col-span-4 space-y-4">
       <div class="glass-card p-6 border-l-4 border-yellow-500">
-        <h2 class="font-black text-xl mb-4 italic text-yellow-500 uppercase">PRODUÇÃO</h2>
+        <h2 class="font-black text-xl mb-4 italic text-yellow-500 uppercase">Produção</h2>
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
             <label class="label-text">Vacas</label>
-            <input id="numVacas" type="number" value="20" oninput="calcular()" class="input-field">
+            <input id="numVacas" type="number" value="20" oninput="executarCalculo()" class="input-field">
           </div>
           <div>
             <label class="label-text">Média L/Vaca</label>
-            <input id="mediaVaca" type="number" value="10" oninput="calcular()" class="input-field">
+            <input id="mediaVaca" type="number" value="10" oninput="executarCalculo()" class="input-field">
           </div>
         </div>
-        <label class="label-text text-yellow-400">Preço de Venda (Litro)</label>
+        <label class="label-text text-yellow-400">Preço Venda (Litro)</label>
         <input id="vendaPreco" type="text" value="R$ 2,20" oninput="fMoeda(this)" class="input-field !text-3xl text-yellow-500">
       </div>
 
       <div class="glass-card p-6 border-l-4 border-blue-500">
-        <h3 class="label-text mb-4 text-blue-400 italic text-center">DIETA POR ANIMAL</h3>
+        <h3 class="label-text mb-4 text-blue-400 italic text-center">Dieta Por Animal (Individual)</h3>
         <div class="space-y-4">
           <div class="grid grid-cols-2 gap-2">
-            <div><label class="label-text text-[10px]">Silo KG</label><input id="siloQtd" type="number" value="15" oninput="calcular()" class="input-field !text-base"></div>
+            <div><label class="label-text text-[10px]">Silo KG</label><input id="siloQtd" type="number" value="15" oninput="executarCalculo()" class="input-field !text-base"></div>
             <div><label class="label-text text-[10px]">Preço Silo</label><input id="siloPreco" type="text" value="R$ 0,45" oninput="fMoeda(this)" class="input-field !text-base"></div>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <div><label class="label-text text-[10px]">Soja KG</label><input id="sojaQtd" type="number" value="2" oninput="calcular()" class="input-field !text-base"></div>
+            <div><label class="label-text text-[10px]">Soja KG</label><input id="sojaQtd" type="number" value="2" oninput="executarCalculo()" class="input-field !text-base"></div>
             <div><label class="label-text text-[10px]">Preço Soja</label><input id="sojaPreco" type="text" value="R$ 2,00" oninput="fMoeda(this)" class="input-field !text-base"></div>
           </div>
           <div class="grid grid-cols-2 gap-2">
-            <div><label class="label-text text-[10px]">Trigo KG</label><input id="trigoQtd" type="number" value="2" oninput="calcular()" class="input-field !text-base"></div>
+            <div><label class="label-text text-[10px]">Trigo KG</label><input id="trigoQtd" type="number" value="2" oninput="executarCalculo()" class="input-field !text-base"></div>
             <div><label class="label-text text-[10px]">Preço Trigo</label><input id="trigoPreco" type="text" value="R$ 1,50" oninput="fMoeda(this)" class="input-field !text-base"></div>
           </div>
         </div>
@@ -80,7 +80,7 @@
       </div>
 
       <div class="glass-card p-6 grid grid-cols-3 gap-4 text-center">
-        <div><p class="label-text">Custo/Litro</p><p id="resCustoL" class="font-bold text-2xl text-white">R$ 0,00</p></div>
+        <div><p class="label-text">Custo/Litro</p><p id="resCustoL" class="font-bold text-2xl">R$ 0,00</p></div>
         <div><p class="label-text text-yellow-500">Sobra/Litro</p><p id="resSobraL" class="font-bold text-2xl text-yellow-500">R$ 0,00</p></div>
         <div><p class="label-text text-red-400">Gasto Mensal</p><p id="resCustoMes" class="font-bold text-2xl text-red-400">R$ 0,00</p></div>
       </div>
@@ -88,58 +88,73 @@
   </div>
 
   <script>
+    // Função de máscara de dinheiro
     function fMoeda(i) {
       let v = i.value.replace(/\D/g, "");
-      if (v.length === 0) { i.value = ""; calcular(); return; }
+      if (v.length === 0) { i.value = ""; executarCalculo(); return; }
       v = (parseInt(v) / 100).toFixed(2).replace(".", ",");
       v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
       i.value = "R$ " + v;
-      calcular();
+      executarCalculo();
     }
 
+    // Função para limpar o texto e virar número
     function limpar(v) {
       if (!v || v === "") return 0;
       let n = v.replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
       return parseFloat(n) || 0;
     }
 
-    function calcular() {
-      // Entradas
-      const nV = parseFloat(document.getElementById('numVacas').value) || 0;
-      const mV = parseFloat(document.getElementById('mediaVaca').value) || 0;
-      const pV = limpar(document.getElementById('vendaPreco').value);
-      
-      const tLitrosDia = nV * mV;
-      document.getElementById('totalLitros').innerText = tLitrosDia.toLocaleString('pt-BR') + " L/DIA";
+    // A função principal de cálculo
+    function executarCalculo() {
+      try {
+        const nV = parseFloat(document.getElementById('numVacas').value) || 0;
+        const mV = parseFloat(document.getElementById('mediaVaca').value) || 0;
+        const pV = limpar(document.getElementById('vendaPreco').value);
+        
+        const tLitrosDia = nV * mV;
+        document.getElementById('totalLitros').innerText = tLitrosDia.toLocaleString('pt-BR') + " L/DIA";
 
-      // Custos (Individuais * Preços)
-      const custoIndividualVaca = 
-        (parseFloat(document.getElementById('siloQtd').value) || 0) * limpar(document.getElementById('siloPreco').value) +
-        (parseFloat(document.getElementById('sojaQtd').value) || 0) * limpar(document.getElementById('sojaPreco').value) +
-        (parseFloat(document.getElementById('trigoQtd').value) || 0) * limpar(document.getElementById('trigoPreco').value);
+        // Custos por vaca
+        const sQ = parseFloat(document.getElementById('siloQtd').value) || 0;
+        const sP = limpar(document.getElementById('siloPreco').value);
+        const jQ = parseFloat(document.getElementById('sojaQtd').value) || 0;
+        const jP = limpar(document.getElementById('sojaPreco').value);
+        const tQ = parseFloat(document.getElementById('trigoQtd').value) || 0;
+        const tP = limpar(document.getElementById('trigoPreco').value);
 
-      const gastoLoteDia = custoIndividualVaca * nV;
-      const faturaLoteDia = tLitrosDia * pV;
-      const lucroLoteDia = faturaLoteDia - gastoLoteDia;
-      
-      const custoLitro = tLitrosDia > 0 ? (gastoLoteDia / tLitrosDia) : 0;
-      const sobraLitro = pV - custoLitro;
+        const custoVaca = (sQ * sP) + (jQ * jP) + (tQ * tP);
+        const gastoLoteDia = custoVaca * nV;
+        const faturaLoteDia = tLitrosDia * pV;
+        const lucroLoteDia = faturaLoteDia - gastoLoteDia;
+        
+        const custoLitro = tLitrosDia > 0 ? (gastoLoteDia / tLitrosDia) : 0;
+        const sobraLitro = pV - custoLitro;
 
-      // Formatação
-      const f = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
-      
-      // Atualiza Diário
-      const elLucro = document.getElementById('resLucroDia');
-      elLucro.innerText = Math.abs(lucroLoteDia).toLocaleString('pt-BR', f);
-      elLucro.className = (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho") + " text-[10rem] font-black leading-none tracking-tighter";
+        const f = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+        
+        // Exibição
+        const elLucro = document.getElementById('resLucroDia');
+        elLucro.innerText = Math.abs(lucroLoteDia).toLocaleString('pt-BR', f);
+        elLucro.className = (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho") + " text-[10rem] font-black leading-none tracking-tighter";
 
-      // Atualiza Mensal
-      document.getElementById('resLucroMes').innerText = "R$ " + (lucroLoteDia * 30).toLocaleString('pt-BR', f);
-      document.getElementById('resLucroMes').className = "text-6xl font-black mt-2 " + (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho");
-      
-      document.getElementById('resFaturaMes').innerText = "R$ " + (faturaLoteDia * 30).toLocaleString('pt-BR', f);
-      document.getElementById('resCustoMes').innerText = "R$ " + (gastoLoteDia * 30).toLocaleString('pt-BR', f);
+        document.getElementById('resLucroMes').innerText = "R$ " + (lucroLoteDia * 30).toLocaleString('pt-BR', f);
+        document.getElementById('resLucroMes').className = "text-6xl font-black mt-2 " + (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho");
+        
+        document.getElementById('resFaturaMes').innerText = "R$ " + (faturaLoteDia * 30).toLocaleString('pt-BR', f);
+        document.getElementById('resCustoMes').innerText = "R$ " + (gastoLoteDia * 30).toLocaleString('pt-BR', f);
 
-      // Rodapé
-      document.getElementById('resCustoL').innerText = "R$ " + custoLitro.toLocaleString('pt-BR', f);
-      document.getElementById('res
+        document.getElementById('resCustoL').innerText = "R$ " + custoLitro.toLocaleString('pt-BR', f);
+        document.getElementById('resSobraL').innerText = "R$ " + (sobraLitro > 0 ? sobraLitro : 0).toLocaleString('pt-BR', f);
+      } catch (e) {
+        console.log("Erro no cálculo:", e);
+      }
+    }
+
+    // Forçar início
+    window.onload = function() {
+      setTimeout(executarCalculo, 500);
+    };
+  </script>
+</body>
+</html>
