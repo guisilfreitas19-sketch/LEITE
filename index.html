@@ -1,22 +1,34 @@
+<!-- VERSÃO 2.0 - LEITEPRO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LeitePro</title>
+<title>LeitePro v2.0</title>
 
 <style>
 body {
   font-family: Arial;
   background: #0f172a;
   margin: 0;
-  color: #fff;
+  color: white;
 }
 
 .container {
   max-width: 1100px;
   margin: auto;
   padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+input, button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
 }
 
 .layout {
@@ -26,24 +38,20 @@ body {
 }
 
 .card {
-  background: #fff;
-  color: #000;
-  border-radius: 12px;
+  background: white;
+  color: black;
   padding: 20px;
+  border-radius: 12px;
 }
 
-h2 { margin-bottom: 15px; }
-
 .accordion-header {
-  width: 100%;
   background: #f1f5f9;
-  border: none;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
-  cursor: pointer;
-  font-weight: bold;
 }
 
 .accordion-content {
@@ -51,40 +59,24 @@ h2 { margin-bottom: 15px; }
   margin-top: 10px;
 }
 
-.arrow.open { transform: rotate(180deg); }
-
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
-input {
+.result {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.status {
+  margin-top: 10px;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #ccc;
+  display: none;
 }
 
-button {
-  margin-top: 15px;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-primary { background: #2563eb; color: white; }
-
-.result { font-size: 2rem; font-weight: bold; }
-
-.summary div {
-  display: flex;
-  justify-content: space-between;
-  margin: 8px 0;
-}
-
-.status { padding: 10px; margin-top: 10px; border-radius: 8px; display:none; }
 .ok { background: #dcfce7; color: green; }
 .warn { background: #fee2e2; color: red; }
 
@@ -94,64 +86,71 @@ button {
 <body>
 
 <div class="container">
+
+<div class="header">
+<input id="fazenda" placeholder="Nome da fazenda">
+<button onclick="novaFazenda()">Nova fazenda</button>
+</div>
+
 <div class="layout">
 
+<!-- INPUT -->
 <div class="card">
+
 <h2>Dados</h2>
 
-<button class="accordion-header" onclick="toggle('a1')">
-Alimentação <span class="arrow" id="arrow-a1">▾</span>
-</button>
+<div onclick="toggle('a1')" class="accordion-header">
+Alimentação <span id="arrow-a1">▾</span>
+</div>
 
 <div id="a1" class="accordion-content">
 <div class="grid">
-<input id="sojaKg" placeholder="Soja R$/kg" oninput="formatarMoeda(this)">
+<input id="sojaKg" placeholder="Soja R$/kg" oninput="moedaMask(this)">
 <input id="sojaQtd" placeholder="kg/dia">
 
-<input id="trigoKg" placeholder="Trigo R$/kg" oninput="formatarMoeda(this)">
+<input id="trigoKg" placeholder="Trigo R$/kg" oninput="moedaMask(this)">
 <input id="trigoQtd" placeholder="kg/dia">
-
-<input id="silagemKg" placeholder="Silagem R$/kg" oninput="formatarMoeda(this)">
-<input id="silagemQtd" placeholder="kg/dia">
 </div>
 </div>
 
-<button class="accordion-header" onclick="toggle('a2')">
-Operação <span class="arrow" id="arrow-a2">▾</span>
-</button>
+<div onclick="toggle('a2')" class="accordion-header">
+Operação <span id="arrow-a2">▾</span>
+</div>
 
 <div id="a2" class="accordion-content">
 <div class="grid">
-<input id="remedio" placeholder="Remédios/dia" oninput="formatarMoeda(this)">
-<input id="energia" placeholder="Energia/dia" oninput="formatarMoeda(this)">
-<input id="maoobra" placeholder="Mão de obra/dia" oninput="formatarMoeda(this)">
+<input id="remedio" placeholder="Remédios" oninput="moedaMask(this)">
+<input id="energia" placeholder="Energia" oninput="moedaMask(this)">
+<input id="maoobra" placeholder="Mão de obra" oninput="moedaMask(this)">
 </div>
 </div>
 
-<button class="accordion-header" onclick="toggle('a3')">
-Produção <span class="arrow" id="arrow-a3">▾</span>
-</button>
+<div onclick="toggle('a3')" class="accordion-header">
+Produção <span id="arrow-a3">▾</span>
+</div>
 
 <div id="a3" class="accordion-content">
 <div class="grid">
 <input id="litros" placeholder="Litros/dia">
-<input id="preco" placeholder="Preço leite" oninput="formatarMoeda(this)">
+<input id="preco" placeholder="Preço leite" oninput="moedaMask(this)">
 </div>
 </div>
 
-<button class="btn-primary" onclick="calcular()">Calcular</button>
+<button onclick="calcular()">Calcular</button>
 
 </div>
 
+<!-- RESULTADO -->
 <div class="card">
+
 <h2>Resultado</h2>
 
 <div class="result" id="custo">R$ 0,00</div>
 
-<div class="summary">
-<div><span>Custo total</span><strong id="total"></strong></div>
-<div><span>Receita</span><strong id="receita"></strong></div>
-<div><span>Lucro</span><strong id="lucro"></strong></div>
+<div>
+<p>Total: <strong id="total"></strong></p>
+<p>Receita: <strong id="receita"></strong></p>
+<p>Lucro: <strong id="lucro"></strong></p>
 </div>
 
 <div id="status" class="status"></div>
@@ -163,64 +162,60 @@ Produção <span class="arrow" id="arrow-a3">▾</span>
 
 <script>
 
-// máscara dinheiro
-function formatarMoeda(input) {
-  let v = input.value.replace(/\D/g,'');
-  v = (v/100).toFixed(2)+'';
-  v = v.replace(".", ",");
-  v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  input.value = "R$ " + v;
+// máscara
+function moedaMask(i){
+let v=i.value.replace(/\D/g,'');
+v=(v/100).toFixed(2)+'';
+v=v.replace(".",",");
+v=v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
+i.value="R$ "+v;
 }
 
-// limpar moeda para cálculo
-function limparMoeda(v) {
-  return parseFloat(
-    v.replace("R$","").replace(/\./g,"").replace(",",".")
-  ) || 0;
+function limpa(v){
+return parseFloat(v.replace("R$","").replace(/\./g,"").replace(",","."))
+||0;
 }
 
-// pegar valor correto
-function valor(id){
-  let el = document.getElementById(id).value;
-  if(el.includes("R$")) return limparMoeda(el);
-  return parseFloat(el)||0;
+function val(id){
+let v=document.getElementById(id).value;
+return v.includes("R$")?limpa(v):parseFloat(v)||0;
 }
 
 // accordion
 function toggle(id){
-  let c=document.getElementById(id);
-  let a=document.getElementById("arrow-"+id);
-  c.style.display = c.style.display==="block"?"none":"block";
-  a.classList.toggle("open");
+let c=document.getElementById(id);
+c.style.display=c.style.display==="block"?"none":"block";
 }
 
 // cálculo
 function calcular(){
 
-let custo =
-valor("sojaKg")*valor("sojaQtd")+
-valor("trigoKg")*valor("trigoQtd")+
-valor("silagemKg")*valor("silagemQtd")+
-valor("remedio")+
-valor("energia")+
-valor("maoobra");
+let custo=
+val("sojaKg")*val("sojaQtd")+
+val("trigoKg")*val("trigoQtd")+
+val("remedio")+
+val("energia")+
+val("maoobra");
 
-let litros = valor("litros");
-let preco = valor("preco");
+let litros=val("litros");
+let preco=val("preco");
 
 if(litros<=0){
-alert("Informe os litros");
+alert("Informe litros");
 return;
 }
 
-let custoLitro = custo/litros;
-let receita = litros*preco;
-let lucro = receita-custo;
+let custoLitro=custo/litros;
+let receita=litros*preco;
+let lucro=receita-custo;
 
-document.getElementById("custo").innerText = moeda(custoLitro);
-document.getElementById("total").innerText = moeda(custo);
-document.getElementById("receita").innerText = moeda(receita);
-document.getElementById("lucro").innerText = moeda(lucro);
+document.getElementById("custo").innerText=moeda(custoLitro);
+document.getElementById("total").innerText=moeda(custo);
+document.getElementById("receita").innerText=moeda(receita);
+document.getElementById("lucro").innerText=moeda(lucro);
+
+// salvar automático
+salvar();
 
 let status=document.getElementById("status");
 status.style.display="block";
@@ -232,12 +227,41 @@ status.innerText="Lucro positivo";
 status.className="status warn";
 status.innerText="Prejuízo";
 }
+
+}
+
+// salvar dados
+function salvar(){
+let dados={};
+document.querySelectorAll("input").forEach(i=>{
+dados[i.id]=i.value;
+});
+localStorage.setItem("leitepro",JSON.stringify(dados));
+}
+
+// carregar
+function carregar(){
+let d=JSON.parse(localStorage.getItem("leitepro"));
+if(!d) return;
+for(let id in d){
+if(document.getElementById(id)){
+document.getElementById(id).value=d[id];
+}
+}
+}
+
+// nova fazenda
+function novaFazenda(){
+localStorage.clear();
+location.reload();
 }
 
 // moeda
 function moeda(v){
 return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 }
+
+window.onload=carregar;
 
 </script>
 
