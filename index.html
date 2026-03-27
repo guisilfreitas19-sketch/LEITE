@@ -1,269 +1,1026 @@
-<!-- VERSÃO 2.0 - LEITEPRO -->
+<!-- VERSÃO 2.1 - LEITEPRO -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>LeitePro v2.0</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeitePro v2.1</title>
+  <style>
+    :root {
+      --bg-1: #0b1220;
+      --bg-2: #111827;
+      --panel: rgba(15, 23, 42, 0.78);
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --primary: #2563eb;
+      --primary-2: #1d4ed8;
+      --primary-soft: rgba(37, 99, 235, 0.14);
+      --success: #166534;
+      --success-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --shadow: 0 18px 50px rgba(2, 6, 23, 0.18);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+    }
 
-<style>
-body {
-  font-family: Arial;
-  background: #0f172a;
-  margin: 0;
-  color: white;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px;
-}
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(22, 163, 74, 0.10), transparent 22%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 100%);
+      color: #fff;
+    }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
+    .app {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 28px;
+    }
 
-input, button {
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
 
-.layout {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 20px;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-.card {
-  background: white;
-  color: black;
-  padding: 20px;
-  border-radius: 12px;
-}
+    .logo {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), #16a34a);
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.24);
+    }
 
-.accordion-header {
-  background: #f1f5f9;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-}
+    .brand h1 {
+      margin: 0;
+      font-size: 1.35rem;
+    }
 
-.accordion-content {
-  display: none;
-  margin-top: 10px;
-}
+    .brand p {
+      margin: 4px 0 0;
+      color: #94a3b8;
+      font-size: 0.94rem;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
 
-.result {
-  font-size: 2rem;
-  font-weight: bold;
-}
+    .hero-card,
+    .hero-side {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
 
-.status {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  display: none;
-}
+    .hero-card {
+      padding: 24px;
+    }
 
-.ok { background: #dcfce7; color: green; }
-.warn { background: #fee2e2; color: red; }
+    .hero-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.9rem;
+      line-height: 1.1;
+    }
 
-</style>
+    .hero-card p {
+      margin: 0;
+      color: #cbd5e1;
+      line-height: 1.55;
+    }
+
+    .badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .badge {
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .hero-side {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .hero-side .mini {
+      color: #93c5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .hero-side strong {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .hero-side span {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 22px;
+    }
+
+    .panel,
+    .results {
+      background: var(--card);
+      color: var(--text);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header,
+    .results-header {
+      padding: 24px 24px 0;
+    }
+
+    .panel-header h3,
+    .results-header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .panel-header p,
+    .results-header p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.45;
+    }
+
+    .panel-body,
+    .results-body {
+      padding: 20px 24px 24px;
+    }
+
+    .farm-row {
+      display: grid;
+      grid-template-columns: 1fr 180px;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      transition: 0.18s ease;
+    }
+
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-soft);
+    }
+
+    .accordion-stack {
+      display: grid;
+      gap: 14px;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    }
+
+    .accordion-header {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      padding: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .accordion-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .accordion-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: #eff6ff;
+      color: var(--primary);
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .accordion-title strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .accordion-title span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .accordion-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .arrow {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: #f1f5f9;
+      transition: 0.2s ease;
+      font-size: 1rem;
+      color: #334155;
+    }
+
+    .arrow.open {
+      transform: rotate(180deg);
+    }
+
+    .accordion-content {
+      display: none;
+      border-top: 1px solid var(--line);
+      padding: 18px;
+      background: rgba(248, 250, 252, 0.75);
+    }
+
+    .accordion-content.open {
+      display: block;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 0.94rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    .main-metric {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc 55%, #f0fdf4);
+      border: 1px solid rgba(37, 99, 235, 0.12);
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .metric-sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .kpis {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .kpi {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .kpi span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .kpi strong {
+      font-size: 1rem;
+      text-align: right;
+    }
+
+    .status {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      font-size: 0.93rem;
+      font-weight: 700;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .status.ok {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .status.warn {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .insights {
+      margin-top: 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .insights h4 {
+      margin: 0 0 10px;
+      font-size: 0.98rem;
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight {
+      border-radius: 14px;
+      padding: 12px 13px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      color: #334155;
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .version {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app {
+        padding: 16px;
+      }
+
+      .farm-row,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .pill {
+        display: none;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">LP</div>
+        <div>
+          <h1>LeitePro</h1>
+          <p>Painel inteligente de custo por litro</p>
+        </div>
+      </div>
+    </div>
 
-<div class="container">
+    <div class="hero">
+      <div class="hero-card">
+        <h2>Controle diário com cara de sistema profissional.</h2>
+        <p>
+          Organize alimentação, operação e produção da fazenda em um painel claro,
+          com leitura rápida para tomada de decisão e apresentação comercial.
+        </p>
+        <div class="badges">
+          <div class="badge">Versão 2.1</div>
+          <div class="badge">Salvamento local</div>
+          <div class="badge">Máscara de moeda</div>
+          <div class="badge">Accordion</div>
+        </div>
+      </div>
 
-<div class="header">
-<input id="fazenda" placeholder="Nome da fazenda">
-<button onclick="novaFazenda()">Nova fazenda</button>
-</div>
+      <div class="hero-side">
+        <div class="mini">Indicador principal</div>
+        <strong id="heroMetric">R$ 0,00</strong>
+        <span>Custo por litro calculado em tempo real com base nos dados lançados.</span>
+      </div>
+    </div>
 
-<div class="layout">
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Lançamentos da fazenda</h3>
+          <p>Preencha os campos e clique em atualizar análise.</p>
+        </div>
 
-<!-- INPUT -->
-<div class="card">
+        <div class="panel-body">
+          <div class="farm-row">
+            <div class="field">
+              <label for="fazenda">Nome da fazenda</label>
+              <input id="fazenda" type="text" placeholder="Ex.: Fazenda Boa Esperança">
+            </div>
 
-<h2>Dados</h2>
+            <div class="field">
+              <label for="dataAnalise">Data da análise</label>
+              <input id="dataAnalise" type="date">
+            </div>
+          </div>
 
-<div onclick="toggle('a1')" class="accordion-header">
-Alimentação <span id="arrow-a1">▾</span>
-</div>
+          <div class="accordion-stack">
+            <div class="accordion-item">
+              <button class="accordion-header" onclick="toggleSection('alimentacao')">
+                <div class="accordion-title">
+                  <div class="accordion-icon">1</div>
+                  <div>
+                    <strong>Alimentação diária</strong>
+                    <span>Preço por kg e quantidade consumida por dia</span>
+                  </div>
+                </div>
+                <div class="accordion-right">
+                  <div class="pill">Essencial</div>
+                  <div class="arrow" id="arrow-alimentacao">▾</div>
+                </div>
+              </button>
 
-<div id="a1" class="accordion-content">
-<div class="grid">
-<input id="sojaKg" placeholder="Soja R$/kg" oninput="moedaMask(this)">
-<input id="sojaQtd" placeholder="kg/dia">
+              <div class="accordion-content open" id="alimentacao">
+                <div class="grid-2">
+                  <div class="field">
+                    <label for="sojaKg">Soja - preço por kg (R$)</label>
+                    <input id="sojaKg" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="sojaQtd">Soja - kg por dia</label>
+                    <input id="sojaQtd" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
 
-<input id="trigoKg" placeholder="Trigo R$/kg" oninput="moedaMask(this)">
-<input id="trigoQtd" placeholder="kg/dia">
-</div>
-</div>
+                  <div class="field">
+                    <label for="trigoKg">Trigo / farelos - preço por kg (R$)</label>
+                    <input id="trigoKg" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="trigoQtd">Trigo / farelos - kg por dia</label>
+                    <input id="trigoQtd" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
 
-<div onclick="toggle('a2')" class="accordion-header">
-Operação <span id="arrow-a2">▾</span>
-</div>
+                  <div class="field">
+                    <label for="silagemKg">Silagem / silo - preço por kg (R$)</label>
+                    <input id="silagemKg" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="silagemQtd">Silagem / silo - kg por dia</label>
+                    <input id="silagemQtd" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
 
-<div id="a2" class="accordion-content">
-<div class="grid">
-<input id="remedio" placeholder="Remédios" oninput="moedaMask(this)">
-<input id="energia" placeholder="Energia" oninput="moedaMask(this)">
-<input id="maoobra" placeholder="Mão de obra" oninput="moedaMask(this)">
-</div>
-</div>
+                  <div class="field">
+                    <label for="racaoKg">Outras rações - preço por kg (R$)</label>
+                    <input id="racaoKg" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="racaoQtd">Outras rações - kg por dia</label>
+                    <input id="racaoQtd" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
 
-<div onclick="toggle('a3')" class="accordion-header">
-Produção <span id="arrow-a3">▾</span>
-</div>
+                  <div class="field">
+                    <label for="mineralKg">Suplemento mineral - preço por kg (R$)</label>
+                    <input id="mineralKg" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="mineralQtd">Suplemento mineral - kg por dia</label>
+                    <input id="mineralQtd" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<div id="a3" class="accordion-content">
-<div class="grid">
-<input id="litros" placeholder="Litros/dia">
-<input id="preco" placeholder="Preço leite" oninput="moedaMask(this)">
-</div>
-</div>
+            <div class="accordion-item">
+              <button class="accordion-header" onclick="toggleSection('operacao')">
+                <div class="accordion-title">
+                  <div class="accordion-icon">2</div>
+                  <div>
+                    <strong>Sanidade e operação</strong>
+                    <span>Custos diários complementares</span>
+                  </div>
+                </div>
+                <div class="accordion-right">
+                  <div class="pill">Operacional</div>
+                  <div class="arrow" id="arrow-operacao">▾</div>
+                </div>
+              </button>
 
-<button onclick="calcular()">Calcular</button>
+              <div class="accordion-content" id="operacao">
+                <div class="grid-2">
+                  <div class="field">
+                    <label for="remedio">Remédios / vacinas por dia (R$)</label>
+                    <input id="remedio" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="energia">Energia elétrica por dia (R$)</label>
+                    <input id="energia" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
 
-</div>
+                  <div class="field">
+                    <label for="combustivel">Combustível por dia (R$)</label>
+                    <input id="combustivel" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="manutencao">Manutenção por dia (R$)</label>
+                    <input id="manutencao" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
 
-<!-- RESULTADO -->
-<div class="card">
+                  <div class="field">
+                    <label for="maoobra">Mão de obra por dia (R$)</label>
+                    <input id="maoobra" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                  <div class="field">
+                    <label for="outros">Outros custos por dia (R$)</label>
+                    <input id="outros" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<h2>Resultado</h2>
+            <div class="accordion-item">
+              <button class="accordion-header" onclick="toggleSection('producao')">
+                <div class="accordion-title">
+                  <div class="accordion-icon">3</div>
+                  <div>
+                    <strong>Produção e venda</strong>
+                    <span>Base para custo por litro, margem e lucro diário</span>
+                  </div>
+                </div>
+                <div class="accordion-right">
+                  <div class="pill">Resultado</div>
+                  <div class="arrow" id="arrow-producao">▾</div>
+                </div>
+              </button>
 
-<div class="result" id="custo">R$ 0,00</div>
+              <div class="accordion-content" id="producao">
+                <div class="grid-2">
+                  <div class="field">
+                    <label for="litros">Litros produzidos por dia</label>
+                    <input id="litros" type="number" min="0" step="0.01" placeholder="0,00">
+                  </div>
+                  <div class="field">
+                    <label for="precoVenda">Preço de venda do litro (R$)</label>
+                    <input id="precoVenda" type="text" placeholder="R$ 0,00" oninput="formatarMoeda(this)">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<div>
-<p>Total: <strong id="total"></strong></p>
-<p>Receita: <strong id="receita"></strong></p>
-<p>Lucro: <strong id="lucro"></strong></p>
-</div>
+          <div class="toolbar">
+            <button class="btn-primary" onclick="calcular()">Atualizar análise</button>
+            <button class="btn-secondary" onclick="preencherExemplo()">Carregar exemplo</button>
+            <button class="btn-secondary" onclick="salvarDados()">Salvar</button>
+            <button class="btn-secondary" onclick="limparCampos()">Limpar tudo</button>
+          </div>
+        </div>
+      </div>
 
-<div id="status" class="status"></div>
+      <div class="results">
+        <div class="results-header">
+          <h3>Resumo executivo</h3>
+          <p>Leitura rápida para decisão e apresentação ao produtor.</p>
+        </div>
 
-</div>
+        <div class="results-body">
+          <div class="main-metric">
+            <div class="metric-label">Custo por litro</div>
+            <div class="metric-value" id="custoPorLitro">R$ 0,00</div>
+            <div class="metric-sub">Indicador principal da operação diária</div>
+          </div>
 
-</div>
-</div>
+          <div class="kpis">
+            <div class="kpi">
+              <span>Fazenda</span>
+              <strong id="resFazenda">-</strong>
+            </div>
+            <div class="kpi">
+              <span>Custo total diário</span>
+              <strong id="custoTotal">R$ 0,00 / dia</strong>
+            </div>
+            <div class="kpi">
+              <span>Receita estimada</span>
+              <strong id="receitaTotal">R$ 0,00 / dia</strong>
+            </div>
+            <div class="kpi">
+              <span>Margem por litro</span>
+              <strong id="margemLitro">R$ 0,00</strong>
+            </div>
+            <div class="kpi">
+              <span>Lucro / prejuízo diário</span>
+              <strong id="lucroDiario">R$ 0,00 / dia</strong>
+            </div>
+            <div class="kpi">
+              <span>Maior centro de custo</span>
+              <strong id="maiorCusto">-</strong>
+            </div>
+          </div>
 
-<script>
+          <div id="statusBox" class="status"></div>
 
-// máscara
-function moedaMask(i){
-let v=i.value.replace(/\D/g,'');
-v=(v/100).toFixed(2)+'';
-v=v.replace(".",",");
-v=v.replace(/\B(?=(\d{3})+(?!\d))/g,".");
-i.value="R$ "+v;
-}
+          <div class="insights">
+            <h4>Leitura automática</h4>
+            <div class="insight-list" id="insightsList">
+              <div class="insight">Preencha os dados e clique em atualizar análise.</div>
+              <div class="insight">A alimentação normalmente representa a maior parte do custo da operação.</div>
+            </div>
+          </div>
 
-function limpa(v){
-return parseFloat(v.replace("R$","").replace(/\./g,"").replace(",","."))
-||0;
-}
+          <div class="version">Versão 2.1 — corrigida com visual completo e silagem.</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-function val(id){
-let v=document.getElementById(id).value;
-return v.includes("R$")?limpa(v):parseFloat(v)||0;
-}
+  <script>
+    const STORAGE_KEY = 'leitepro_v21';
 
-// accordion
-function toggle(id){
-let c=document.getElementById(id);
-c.style.display=c.style.display==="block"?"none":"block";
-}
+    const campos = [
+      'fazenda','dataAnalise',
+      'sojaKg','sojaQtd',
+      'trigoKg','trigoQtd',
+      'silagemKg','silagemQtd',
+      'racaoKg','racaoQtd',
+      'mineralKg','mineralQtd',
+      'remedio','energia','combustivel','manutencao','maoobra','outros',
+      'litros','precoVenda'
+    ];
 
-// cálculo
-function calcular(){
+    function formatarMoeda(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (!v) {
+        input.value = '';
+        return;
+      }
+      v = (parseInt(v, 10) / 100).toFixed(2) + '';
+      v = v.replace('.', ',');
+      v = v.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      input.value = 'R$ ' + v;
+    }
 
-let custo=
-val("sojaKg")*val("sojaQtd")+
-val("trigoKg")*val("trigoQtd")+
-val("remedio")+
-val("energia")+
-val("maoobra");
+    function limparMoeda(valor) {
+      return parseFloat(
+        valor.replace('R$', '').replace(/\./g, '').replace(',', '.').trim()
+      ) || 0;
+    }
 
-let litros=val("litros");
-let preco=val("preco");
+    function valor(id) {
+      const el = document.getElementById(id);
+      const val = el.value || '';
+      if (val.includes('R$')) return limparMoeda(val);
+      return parseFloat(val) || 0;
+    }
 
-if(litros<=0){
-alert("Informe litros");
-return;
-}
+    function toggleSection(id) {
+      const content = document.getElementById(id);
+      const arrow = document.getElementById('arrow-' + id);
+      const isOpen = content.classList.contains('open');
+      content.classList.toggle('open', !isOpen);
+      arrow.classList.toggle('open', !isOpen);
+    }
 
-let custoLitro=custo/litros;
-let receita=litros*preco;
-let lucro=receita-custo;
+    function moeda(v) {
+      return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
 
-document.getElementById("custo").innerText=moeda(custoLitro);
-document.getElementById("total").innerText=moeda(custo);
-document.getElementById("receita").innerText=moeda(receita);
-document.getElementById("lucro").innerText=moeda(lucro);
+    function descobrirMaiorCusto(custos) {
+      let maiorNome = '-';
+      let maiorValor = -1;
+      for (const [nome, valor] of Object.entries(custos)) {
+        if (valor > maiorValor) {
+          maiorValor = valor;
+          maiorNome = nome;
+        }
+      }
+      return maiorValor > 0 ? maiorNome : '-';
+    }
 
-// salvar automático
-salvar();
+    function atualizarInsights(custos, custoTotal, maiorCusto, margemPorLitro, precoVenda) {
+      const lista = document.getElementById('insightsList');
 
-let status=document.getElementById("status");
-status.style.display="block";
+      const alimentacao =
+        custos['Soja'] +
+        custos['Trigo / farelos'] +
+        custos['Silagem / silo'] +
+        custos['Outras rações'] +
+        custos['Suplemento mineral'];
 
-if(lucro>0){
-status.className="status ok";
-status.innerText="Lucro positivo";
-}else{
-status.className="status warn";
-status.innerText="Prejuízo";
-}
+      const percAlimentacao = custoTotal > 0 ? (alimentacao / custoTotal) * 100 : 0;
+      const percMaoObra = custoTotal > 0 ? (custos['Mão de obra'] / custoTotal) * 100 : 0;
 
-}
+      const itens = [];
 
-// salvar dados
-function salvar(){
-let dados={};
-document.querySelectorAll("input").forEach(i=>{
-dados[i.id]=i.value;
-});
-localStorage.setItem("leitepro",JSON.stringify(dados));
-}
+      if (maiorCusto !== '-') {
+        itens.push(`O maior centro de custo atual é <strong>${maiorCusto}</strong>.`);
+      }
 
-// carregar
-function carregar(){
-let d=JSON.parse(localStorage.getItem("leitepro"));
-if(!d) return;
-for(let id in d){
-if(document.getElementById(id)){
-document.getElementById(id).value=d[id];
-}
-}
-}
+      if (percAlimentacao > 0) {
+        itens.push(`A alimentação representa <strong>${percAlimentacao.toFixed(1).replace('.', ',')}%</strong> do custo diário.`);
+      }
 
-// nova fazenda
-function novaFazenda(){
-localStorage.clear();
-location.reload();
-}
+      if (percMaoObra >= 15) {
+        itens.push(`A mão de obra está relevante, com <strong>${percMaoObra.toFixed(1).replace('.', ',')}%</strong> do custo diário.`);
+      }
 
-// moeda
-function moeda(v){
-return v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-}
+      if (precoVenda > 0 && margemPorLitro >= 0) {
+        itens.push(`Com o preço atual, a margem estimada é de <strong>${moeda(margemPorLitro)}</strong> por litro.`);
+      }
 
-window.onload=carregar;
+      if (precoVenda > 0 && margemPorLitro < 0) {
+        itens.push(`O preço de venda está abaixo do custo. A operação perde <strong>${moeda(Math.abs(margemPorLitro))}</strong> por litro.`);
+      }
 
-</script>
+      if (itens.length === 0) {
+        itens.push('Preencha mais dados para liberar a leitura automática da operação.');
+      }
 
+      lista.innerHTML = itens.map(item => `<div class="insight">${item}</div>`).join('');
+    }
+
+    function calcular() {
+      const custos = {
+        'Soja': valor('sojaKg') * valor('sojaQtd'),
+        'Trigo / farelos': valor('trigoKg') * valor('trigoQtd'),
+        'Silagem / silo': valor('silagemKg') * valor('silagemQtd'),
+        'Outras rações': valor('racaoKg') * valor('racaoQtd'),
+        'Suplemento mineral': valor('mineralKg') * valor('mineralQtd'),
+        'Remédios / vacinas': valor('remedio'),
+        'Energia elétrica': valor('energia'),
+        'Combustível': valor('combustivel'),
+        'Manutenção': valor('manutencao'),
+        'Mão de obra': valor('maoobra'),
+        'Outros custos': valor('outros')
+      };
+
+      const litros = valor('litros');
+      const precoVenda = valor('precoVenda');
+      const custoTotal = Object.values(custos).reduce((a, b) => a + b, 0);
+      const maiorCusto = descobrirMaiorCusto(custos);
+      const nomeFazenda = document.getElementById('fazenda').value.trim() || '-';
+
+      document.getElementById('resFazenda').textContent = nomeFazenda;
+      document.getElementById('custoTotal').textContent = moeda(custoTotal) + ' / dia';
+      document.getElementById('maiorCusto').textContent = maiorCusto;
+
+      if (litros <= 0) {
+        document.getElementById('custoPorLitro').textContent = 'R$ 0,00';
+        document.getElementById('heroMetric').textContent = 'R$ 0,00';
+        document.getElementById('receitaTotal').textContent = 'R$ 0,00 / dia';
+        document.getElementById('margemLitro').textContent = 'R$ 0,00';
+        document.getElementById('lucroDiario').textContent = 'R$ 0,00 / dia';
+
+        const status = document.getElementById('statusBox');
+        status.style.display = 'block';
+        status.className = 'status warn';
+        status.innerHTML = 'Informe os litros produzidos por dia para calcular o custo por litro.';
+
+        atualizarInsights(custos, custoTotal, maiorCusto, 0, precoVenda);
+        salvarDados();
+        return;
+      }
+
+      const custoPorLitro = custoTotal / litros;
+      const receitaTotal = litros * precoVenda;
+      const margemPorLitro = precoVenda - custoPorLitro;
+      const lucroDiario = receitaTotal - custoTotal;
+
+      document.getElementById('custoPorLitro').textContent = moeda(custoPorLitro);
+      document.getElementById('heroMetric').textContent = moeda(custoPorLitro);
+      document.getElementById('receitaTotal').textContent = moeda(receitaTotal) + ' / dia';
+      document.getElementById('margemLitro').textContent = moeda(margemPorLitro);
+      document.getElementById('lucroDiario').textContent = moeda(lucroDiario) + ' / dia';
+
+      const status = document.getElementById('statusBox');
+      status.style.display = 'block';
+
+      if (precoVenda <= 0) {
+        status.className = 'status warn';
+        status.innerHTML = 'O custo por litro foi calculado, mas falta informar o preço de venda do leite.';
+      } else if (margemPorLitro >= 0) {
+        status.className = 'status ok';
+        status.innerHTML = `Operação positiva. A margem estimada é de <strong>${moeda(margemPorLitro)}</strong> por litro.`;
+      } else {
+        status.className = 'status warn';
+        status.innerHTML = `Operação negativa. O prejuízo estimado é de <strong>${moeda(Math.abs(margemPorLitro))}</strong> por litro.`;
+      }
+
+      atualizarInsights(custos, custoTotal, maiorCusto, margemPorLitro, precoVenda);
+      salvarDados();
+    }
+
+    function salvarDados() {
+      const dados = {};
+      campos.forEach(id => {
+        dados[id] = document.getElementById(id).value;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+    }
+
+    function carregarDados() {
+      const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (!dados) return;
+      campos.forEach(id => {
+        if (dados[id] !== undefined && document.getElementById(id)) {
+          document.getElementById(id).value = dados[id];
+        }
+      });
+    }
+
+    function limparCampos() {
+      campos.forEach(id => {
+        document.getElementById(id).value = '';
+      });
+
+      localStorage.removeItem(STORAGE_KEY);
+
+      document.getElementById('custoPorLitro').textContent = 'R$ 0,00';
+      document.getElementById('heroMetric').textContent = 'R$ 0,00';
+      document.getElementById('resFazenda').textContent = '-';
+      document.getElementById('custoTotal').textContent = 'R$ 0,00 / dia';
+      document.getElementById('receitaTotal').textContent = 'R$ 0,00 / dia';
+      document.getElementById('margemLitro').textContent = 'R$ 0,00';
+      document.getElementById('lucroDiario').textContent = 'R$ 0,00 / dia';
+      document.getElementById('maiorCusto').textContent = '-';
+
+      const status = document.getElementById('statusBox');
+      status.style.display = 'none';
+      status.className = 'status';
+      status.innerHTML = '';
+
+      document.getElementById('insightsList').innerHTML = `
+        <div class="insight">Preencha os dados e clique em atualizar análise.</div>
+        <div class="insight">A alimentação normalmente representa a maior parte do custo da operação.</div>
+      `;
+    }
+
+    function preencherExemplo() {
+      document.getElementById('fazenda').value = 'Fazenda Boa Esperança';
+      document.getElementById('dataAnalise').value = new Date().toISOString().slice(0, 10);
+
+      document.getElementById('sojaKg').value = 'R$ 2,80';
+      document.getElementById('sojaQtd').value = '120';
+
+      document.getElementById('trigoKg').value = 'R$ 1,90';
+      document.getElementById('trigoQtd').value = '80';
+
+      document.getElementById('silagemKg').value = 'R$ 0,45';
+      document.getElementById('silagemQtd').value = '900';
+
+      document.getElementById('racaoKg').value = 'R$ 2,20';
+      document.getElementById('racaoQtd').value = '60';
+
+      document.getElementById('mineralKg').value = 'R$ 4,50';
+      document.getElementById('mineralQtd').value = '12';
+
+      document.getElementById('remedio').value = 'R$ 35,00';
+      document.getElementById('energia').value = 'R$ 60,00';
+      document.getElementById('combustivel').value = 'R$ 45,00';
+      document.getElementById('manutencao').value = 'R$ 30,00';
+      document.getElementById('maoobra').value = 'R$ 220,00';
+      document.getElementById('outros').value = 'R$ 40,00';
+
+      document.getElementById('litros').value = '1500';
+      document.getElementById('precoVenda').value = 'R$ 2,12';
+
+      calcular();
+    }
+
+    window.addEventListener('load', () => {
+      document.getElementById('dataAnalise').value = new Date().toISOString().slice(0, 10);
+      document.getElementById('alimentacao').classList.add('open');
+      document.getElementById('arrow-alimentacao').classList.add('open');
+      carregarDados();
+    });
+  </script>
 </body>
 </html>
