@@ -243,27 +243,47 @@
       <div class="card">
         <h2>Dados da fazenda</h2>
 
-        <div class="section-title">Alimentação</div>
+        <div class="section-title">Alimentação diária</div>
         <div class="form-grid">
           <div class="field">
-            <label for="soja">Soja (R$)</label>
-            <input id="soja" type="number" min="0" step="0.01" placeholder="0,00" />
+            <label for="sojaKg">Soja - preço por kg (R$)</label>
+            <input id="sojaKg" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
           <div class="field">
-            <label for="trigo">Trigo / farelos (R$)</label>
-            <input id="trigo" type="number" min="0" step="0.01" placeholder="0,00" />
+            <label for="sojaQtd">Soja - kg por dia</label>
+            <input id="sojaQtd" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
           <div class="field">
-            <label for="silagem">Silagem / silo (R$)</label>
-            <input id="silagem" type="number" min="0" step="0.01" placeholder="0,00" />
+            <label for="trigoKg">Trigo / farelos - preço por kg (R$)</label>
+            <input id="trigoKg" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
           <div class="field">
-            <label for="racao">Outras rações (R$)</label>
-            <input id="racao" type="number" min="0" step="0.01" placeholder="0,00" />
+            <label for="trigoQtd">Trigo / farelos - kg por dia</label>
+            <input id="trigoQtd" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
-          <div class="field full">
-            <label for="mineral">Suplemento mineral / núcleo (R$)</label>
-            <input id="mineral" type="number" min="0" step="0.01" placeholder="0,00" />
+          <div class="field">
+            <label for="silagemKg">Silagem / silo - preço por kg (R$)</label>
+            <input id="silagemKg" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="silagemQtd">Silagem / silo - kg por dia</label>
+            <input id="silagemQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="racaoKg">Outras rações - preço por kg (R$)</label>
+            <input id="racaoKg" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="racaoQtd">Outras rações - kg por dia</label>
+            <input id="racaoQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="mineralKg">Suplemento mineral - preço por kg (R$)</label>
+            <input id="mineralKg" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="mineralQtd">Suplemento mineral - kg por dia</label>
+            <input id="mineralQtd" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
         </div>
 
@@ -291,17 +311,37 @@
           </div>
         </div>
 
-        <div class="section-title">Outros custos e produção</div>
+        <div class="section-title">Outros custos e produção diária</div>
         <div class="form-grid">
           <div class="field">
-            <label for="outros">Outros custos (R$)</label>
+            <label for="remedio">Remédios / vacinas por dia (R$)</label>
+            <input id="remedio" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="energia">Energia elétrica por dia (R$)</label>
+            <input id="energia" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="combustivel">Combustível por dia (R$)</label>
+            <input id="combustivel" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="manutencao">Manutenção por dia (R$)</label>
+            <input id="manutencao" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="maoobra">Mão de obra por dia (R$)</label>
+            <input id="maoobra" type="number" min="0" step="0.01" placeholder="0,00" />
+          </div>
+          <div class="field">
+            <label for="outros">Outros custos por dia (R$)</label>
             <input id="outros" type="number" min="0" step="0.01" placeholder="0,00" />
           </div>
           <div class="field">
-            <label for="litros">Litros produzidos no mês</label>
+            <label for="litros">Litros produzidos por dia</label>
             <input id="litros" type="number" min="0" step="0.01" placeholder="0" />
           </div>
-          <div class="field full">
+          <div class="field">
             <label for="precoVenda">Preço de venda do litro (R$)</label>
             <input id="precoVenda" type="number" min="0" step="0.01" placeholder="Ex.: 2.10" />
           </div>
@@ -349,18 +389,17 @@
 
         <div class="section-title">Leitura rápida</div>
         <p class="muted">
-          Use esse resultado para mostrar ao produtor se ele está ganhando ou perdendo dinheiro por litro.
-          O principal objetivo é identificar onde cortar custo sem derrubar produção.
+          Agora o sistema trabalha no formato diário. A alimentação é calculada por <strong>preço por kg × quantidade em kg por dia</strong>, gerando um custo por litro mais fiel à rotina da fazenda.
         </p>
 
         <ul class="tip-list" id="dicas">
-          <li>Preencha todos os custos mensais que impactam a ordenha.</li>
-          <li>Alimentação costuma ser o item mais pesado.</li>
-          <li>Sem produção em litros, não existe custo por litro confiável.</li>
+          <li>Informe a alimentação com preço por kg e quantidade consumida por dia.</li>
+          <li>Os demais custos agora são lançados no formato diário.</li>
+          <li>Sem litros produzidos por dia, não existe custo por litro confiável.</li>
         </ul>
 
         <div class="footer-note">
-          Dica comercial: apresente esse diagnóstico como uma ferramenta de decisão, não só como uma planilha.
+          Dica comercial: apresente esse diagnóstico diário como ferramenta de decisão rápida para o produtor.
         </div>
       </div>
     </div>
@@ -368,7 +407,7 @@
 
   <script>
     const campos = [
-      'soja','trigo','silagem','racao','mineral',
+      'sojaKg','sojaQtd','trigoKg','trigoQtd','silagemKg','silagemQtd','racaoKg','racaoQtd','mineralKg','mineralQtd',
       'remedio','energia','combustivel','manutencao','maoobra','outros','litros','precoVenda'
     ];
 
@@ -383,11 +422,11 @@
 
     function calcular() {
       const custos = {
-        Soja: valor('soja'),
-        'Trigo / farelos': valor('trigo'),
-        'Silagem / silo': valor('silagem'),
-        'Outras rações': valor('racao'),
-        'Suplemento mineral': valor('mineral'),
+        'Soja': valor('sojaKg') * valor('sojaQtd'),
+        'Trigo / farelos': valor('trigoKg') * valor('trigoQtd'),
+        'Silagem / silo': valor('silagemKg') * valor('silagemQtd'),
+        'Outras rações': valor('racaoKg') * valor('racaoQtd'),
+        'Suplemento mineral': valor('mineralKg') * valor('mineralQtd'),
         'Remédios / vacinas': valor('remedio'),
         'Energia elétrica': valor('energia'),
         'Combustível': valor('combustivel'),
@@ -403,7 +442,7 @@
       if (litros <= 0) {
         document.getElementById('statusBox').style.display = 'block';
         document.getElementById('statusBox').className = 'status warn';
-        document.getElementById('statusBox').innerHTML = 'Informe a quantidade de litros produzidos no mês para calcular corretamente.';
+        document.getElementById('statusBox').innerHTML = 'Informe a quantidade de litros produzidos por dia para calcular corretamente.';
         document.getElementById('custoPorLitro').textContent = 'R$ 0,00';
         document.getElementById('custoTotal').textContent = moeda(custoTotal);
         document.getElementById('receitaTotal').textContent = 'R$ 0,00';
@@ -420,10 +459,10 @@
       const maiorCusto = descobrirMaiorCusto(custos);
 
       document.getElementById('custoPorLitro').textContent = moeda(custoPorLitro);
-      document.getElementById('custoTotal').textContent = moeda(custoTotal);
-      document.getElementById('receitaTotal').textContent = moeda(receitaTotal);
+      document.getElementById('custoTotal').textContent = moeda(custoTotal) + ' / dia';
+      document.getElementById('receitaTotal').textContent = moeda(receitaTotal) + ' / dia';
       document.getElementById('margemLitro').textContent = moeda(margemPorLitro);
-      document.getElementById('lucroMensal').textContent = moeda(lucroMensal);
+      document.getElementById('lucroMensal').textContent = moeda(lucroMensal) + ' / dia';
       document.getElementById('maiorCusto').textContent = maiorCusto;
 
       const status = document.getElementById('statusBox');
@@ -434,10 +473,10 @@
         status.innerHTML = 'O custo por litro foi calculado, mas falta informar o preço de venda para analisar margem e lucro.';
       } else if (margemPorLitro >= 0) {
         status.className = 'status ok';
-        status.innerHTML = `A operação está positiva. A margem estimada é de <strong>${moeda(margemPorLitro)}</strong> por litro.`;
+        status.innerHTML = `A operação diária está positiva. A margem estimada é de <strong>${moeda(margemPorLitro)}</strong> por litro.`;
       } else {
         status.className = 'status warn';
-        status.innerHTML = `Atenção: a operação está no negativo. O prejuízo estimado é de <strong>${moeda(Math.abs(margemPorLitro))}</strong> por litro.`;
+        status.innerHTML = `Atenção: a operação diária está no negativo. O prejuízo estimado é de <strong>${moeda(Math.abs(margemPorLitro))}</strong> por litro.`;
       }
 
       atualizarDicas(custos, custoTotal, maiorCusto);
@@ -482,18 +521,23 @@
     }
 
     function preencherExemplo() {
-      document.getElementById('soja').value = 6500;
-      document.getElementById('trigo').value = 1800;
-      document.getElementById('silagem').value = 7200;
-      document.getElementById('racao').value = 2300;
-      document.getElementById('mineral').value = 950;
-      document.getElementById('remedio').value = 850;
-      document.getElementById('energia').value = 1200;
-      document.getElementById('combustivel').value = 900;
-      document.getElementById('manutencao').value = 700;
-      document.getElementById('maoobra').value = 4800;
-      document.getElementById('outros').value = 1200;
-      document.getElementById('litros').value = 18000;
+      document.getElementById('sojaKg').value = 2.80;
+      document.getElementById('sojaQtd').value = 120;
+      document.getElementById('trigoKg').value = 1.90;
+      document.getElementById('trigoQtd').value = 80;
+      document.getElementById('silagemKg').value = 0.45;
+      document.getElementById('silagemQtd').value = 900;
+      document.getElementById('racaoKg').value = 2.20;
+      document.getElementById('racaoQtd').value = 60;
+      document.getElementById('mineralKg').value = 4.50;
+      document.getElementById('mineralQtd').value = 12;
+      document.getElementById('remedio').value = 35;
+      document.getElementById('energia').value = 60;
+      document.getElementById('combustivel').value = 45;
+      document.getElementById('manutencao').value = 30;
+      document.getElementById('maoobra').value = 220;
+      document.getElementById('outros').value = 40;
+      document.getElementById('litros').value = 1500;
       document.getElementById('precoVenda').value = 2.12;
       calcular();
     }
