@@ -13,12 +13,15 @@
       --border: #d1d5db;
       --accent: #166534;
       --accent-2: #15803d;
+      --accent-soft: rgba(21, 128, 61, 0.12);
       --danger: #b91c1c;
       --shadow: 0 10px 30px rgba(0,0,0,0.08);
       --radius: 18px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -28,7 +31,7 @@
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: 0 auto;
       padding: 24px;
     }
@@ -39,7 +42,7 @@
       padding: 28px;
       border-radius: 24px;
       box-shadow: var(--shadow);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .hero h1 {
@@ -49,13 +52,53 @@
 
     .hero p {
       margin: 0;
-      opacity: 0.95;
+      opacity: 0.96;
       line-height: 1.5;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0 24px;
+    }
+
+    .step {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #dcfce7;
+      color: var(--accent);
+      font-weight: bold;
+      text-align: center;
+      line-height: 30px;
+      margin-bottom: 8px;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1rem;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.45fr 1fr;
       gap: 24px;
     }
 
@@ -69,15 +112,25 @@
 
     .card h2 {
       margin-top: 0;
+      margin-bottom: 18px;
       font-size: 1.2rem;
     }
 
     .section-title {
-      margin: 22px 0 12px;
+      margin: 24px 0 12px;
       font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-badge {
+      font-size: 1rem;
+      color: var(--accent);
+      font-weight: bold;
     }
 
     .form-grid {
@@ -90,6 +143,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
+      position: relative;
     }
 
     .field label {
@@ -106,11 +160,20 @@
       font-size: 1rem;
       outline: none;
       background: #fff;
+      transition: 0.2s ease;
     }
 
     .field input:focus {
       border-color: var(--accent-2);
-      box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.12);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+      transform: translateY(-1px);
+    }
+
+    .highlight-start label::before {
+      content: "→";
+      color: var(--accent);
+      font-weight: bold;
+      margin-right: 8px;
     }
 
     .full {
@@ -121,7 +184,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 18px;
+      margin-top: 22px;
     }
 
     button {
@@ -131,6 +194,11 @@
       font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
     }
 
     .btn-primary {
@@ -153,13 +221,14 @@
 
     .result-label {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       margin-bottom: 6px;
     }
 
     .result-value {
       font-size: 2rem;
       font-weight: bold;
+      color: #16345f;
     }
 
     .summary {
@@ -172,7 +241,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 14px;
+      padding: 13px 14px;
       border-radius: 12px;
       background: #f9fafb;
       border: 1px solid #eceff3;
@@ -181,12 +250,13 @@
 
     .summary-item strong {
       font-size: 1rem;
+      text-align: right;
     }
 
     .muted {
       color: var(--muted);
       font-size: 0.92rem;
-      line-height: 1.45;
+      line-height: 1.5;
     }
 
     .status {
@@ -195,6 +265,7 @@
       border-radius: 14px;
       font-weight: bold;
       line-height: 1.5;
+      display: none;
     }
 
     .ok {
@@ -221,11 +292,26 @@
       color: var(--muted);
     }
 
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 1.6rem; }
-      .result-value { font-size: 1.6rem; }
+    @media (max-width: 920px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+
+      .result-value {
+        font-size: 1.6rem;
+      }
     }
   </style>
 </head>
@@ -234,116 +320,130 @@
     <div class="hero">
       <h1>Calculadora de Custo por Litro do Leite</h1>
       <p>
-        Preencha os custos mensais da fazenda e a produção total de litros. O sistema calcula o custo por litro,
-        a margem por litro e mostra onde está o maior peso financeiro da operação.
+        Ferramenta diária para analisar o custo real da produção de leite.
+        A alimentação é calculada por <strong>preço por kg × quantidade em kg por dia</strong>.
       </p>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <strong>Preencha a alimentação</strong>
+        <span>Informe preço por kg e quantidade consumida por dia.</span>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <strong>Informe custos diários</strong>
+        <span>Lance sanidade, energia, combustível, mão de obra e outros custos.</span>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <strong>Veja o resultado</strong>
+        <span>O sistema calcula custo por litro, margem e lucro diário.</span>
+      </div>
     </div>
 
     <div class="grid">
       <div class="card">
         <h2>Dados da fazenda</h2>
 
-        <div class="section-title">Alimentação diária</div>
+        <div class="section-title">
+          <span class="section-badge">→</span>
+          Alimentação diária
+        </div>
+
         <div class="form-grid">
-          <div class="field">
+          <div class="field highlight-start">
             <label for="sojaKg">Soja - preço por kg (R$)</label>
-            <input id="sojaKg" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="sojaKg" type="number" min="0" step="0.01" placeholder="Ex: 2,80" />
           </div>
           <div class="field">
             <label for="sojaQtd">Soja - kg por dia</label>
-            <input id="sojaQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="sojaQtd" type="number" min="0" step="0.01" placeholder="Ex: 120" />
           </div>
+
           <div class="field">
             <label for="trigoKg">Trigo / farelos - preço por kg (R$)</label>
-            <input id="trigoKg" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="trigoKg" type="number" min="0" step="0.01" placeholder="Ex: 1,90" />
           </div>
           <div class="field">
             <label for="trigoQtd">Trigo / farelos - kg por dia</label>
-            <input id="trigoQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="trigoQtd" type="number" min="0" step="0.01" placeholder="Ex: 80" />
           </div>
+
           <div class="field">
             <label for="silagemKg">Silagem / silo - preço por kg (R$)</label>
-            <input id="silagemKg" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="silagemKg" type="number" min="0" step="0.01" placeholder="Ex: 0,45" />
           </div>
           <div class="field">
             <label for="silagemQtd">Silagem / silo - kg por dia</label>
-            <input id="silagemQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="silagemQtd" type="number" min="0" step="0.01" placeholder="Ex: 900" />
           </div>
+
           <div class="field">
             <label for="racaoKg">Outras rações - preço por kg (R$)</label>
-            <input id="racaoKg" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="racaoKg" type="number" min="0" step="0.01" placeholder="Ex: 2,20" />
           </div>
           <div class="field">
             <label for="racaoQtd">Outras rações - kg por dia</label>
-            <input id="racaoQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="racaoQtd" type="number" min="0" step="0.01" placeholder="Ex: 60" />
           </div>
+
           <div class="field">
             <label for="mineralKg">Suplemento mineral - preço por kg (R$)</label>
-            <input id="mineralKg" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="mineralKg" type="number" min="0" step="0.01" placeholder="Ex: 4,50" />
           </div>
           <div class="field">
             <label for="mineralQtd">Suplemento mineral - kg por dia</label>
-            <input id="mineralQtd" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="mineralQtd" type="number" min="0" step="0.01" placeholder="Ex: 12" />
           </div>
         </div>
 
-        <div class="section-title">Sanidade e operação</div>
-        <div class="form-grid">
-          <div class="field">
-            <label for="remedio">Remédios / vacinas (R$)</label>
-            <input id="remedio" type="number" min="0" step="0.01" placeholder="0,00" />
-          </div>
-          <div class="field">
-            <label for="energia">Energia elétrica (R$)</label>
-            <input id="energia" type="number" min="0" step="0.01" placeholder="0,00" />
-          </div>
-          <div class="field">
-            <label for="combustivel">Combustível (R$)</label>
-            <input id="combustivel" type="number" min="0" step="0.01" placeholder="0,00" />
-          </div>
-          <div class="field">
-            <label for="manutencao">Manutenção (R$)</label>
-            <input id="manutencao" type="number" min="0" step="0.01" placeholder="0,00" />
-          </div>
-          <div class="field full">
-            <label for="maoobra">Mão de obra (R$)</label>
-            <input id="maoobra" type="number" min="0" step="0.01" placeholder="0,00" />
-          </div>
+        <div class="section-title">
+          <span class="section-badge">→</span>
+          Sanidade e operação diária
         </div>
 
-        <div class="section-title">Outros custos e produção diária</div>
         <div class="form-grid">
-          <div class="field">
+          <div class="field highlight-start">
             <label for="remedio">Remédios / vacinas por dia (R$)</label>
-            <input id="remedio" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="remedio" type="number" min="0" step="0.01" placeholder="Ex: 35" />
           </div>
           <div class="field">
             <label for="energia">Energia elétrica por dia (R$)</label>
-            <input id="energia" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="energia" type="number" min="0" step="0.01" placeholder="Ex: 60" />
           </div>
           <div class="field">
             <label for="combustivel">Combustível por dia (R$)</label>
-            <input id="combustivel" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="combustivel" type="number" min="0" step="0.01" placeholder="Ex: 45" />
           </div>
           <div class="field">
             <label for="manutencao">Manutenção por dia (R$)</label>
-            <input id="manutencao" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="manutencao" type="number" min="0" step="0.01" placeholder="Ex: 30" />
           </div>
           <div class="field">
             <label for="maoobra">Mão de obra por dia (R$)</label>
-            <input id="maoobra" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="maoobra" type="number" min="0" step="0.01" placeholder="Ex: 220" />
           </div>
           <div class="field">
             <label for="outros">Outros custos por dia (R$)</label>
-            <input id="outros" type="number" min="0" step="0.01" placeholder="0,00" />
+            <input id="outros" type="number" min="0" step="0.01" placeholder="Ex: 40" />
           </div>
-          <div class="field">
+        </div>
+
+        <div class="section-title">
+          <span class="section-badge">→</span>
+          Produção diária
+        </div>
+
+        <div class="form-grid">
+          <div class="field highlight-start">
             <label for="litros">Litros produzidos por dia</label>
-            <input id="litros" type="number" min="0" step="0.01" placeholder="0" />
+            <input id="litros" type="number" min="0" step="0.01" placeholder="Ex: 1500" />
           </div>
           <div class="field">
             <label for="precoVenda">Preço de venda do litro (R$)</label>
-            <input id="precoVenda" type="number" min="0" step="0.01" placeholder="Ex.: 2.10" />
+            <input id="precoVenda" type="number" min="0" step="0.01" placeholder="Ex: 2,12" />
           </div>
         </div>
 
@@ -364,20 +464,20 @@
 
         <div class="summary">
           <div class="summary-item">
-            <span>Custo total mensal</span>
-            <strong id="custoTotal">R$ 0,00</strong>
+            <span>Custo total diário</span>
+            <strong id="custoTotal">R$ 0,00 / dia</strong>
           </div>
           <div class="summary-item">
             <span>Receita estimada</span>
-            <strong id="receitaTotal">R$ 0,00</strong>
+            <strong id="receitaTotal">R$ 0,00 / dia</strong>
           </div>
           <div class="summary-item">
             <span>Margem por litro</span>
             <strong id="margemLitro">R$ 0,00</strong>
           </div>
           <div class="summary-item">
-            <span>Lucro / prejuízo mensal</span>
-            <strong id="lucroMensal">R$ 0,00</strong>
+            <span>Lucro / prejuízo diário</span>
+            <strong id="lucroMensal">R$ 0,00 / dia</strong>
           </div>
           <div class="summary-item">
             <span>Maior centro de custo</span>
@@ -385,21 +485,22 @@
           </div>
         </div>
 
-        <div id="statusBox" class="status ok" style="display:none;"></div>
+        <div id="statusBox" class="status"></div>
 
         <div class="section-title">Leitura rápida</div>
         <p class="muted">
-          Agora o sistema trabalha no formato diário. A alimentação é calculada por <strong>preço por kg × quantidade em kg por dia</strong>, gerando um custo por litro mais fiel à rotina da fazenda.
+          O sistema mostra quanto custa produzir cada litro de leite por dia.
+          Isso ajuda a identificar desperdício, baixa margem e os pontos onde a fazenda pode melhorar.
         </p>
 
         <ul class="tip-list" id="dicas">
           <li>Informe a alimentação com preço por kg e quantidade consumida por dia.</li>
-          <li>Os demais custos agora são lançados no formato diário.</li>
-          <li>Sem litros produzidos por dia, não existe custo por litro confiável.</li>
+          <li>Os demais custos devem ser lançados no formato diário.</li>
+          <li>Sem litros produzidos por dia, o custo por litro não fica confiável.</li>
         </ul>
 
         <div class="footer-note">
-          Dica comercial: apresente esse diagnóstico diário como ferramenta de decisão rápida para o produtor.
+          Dica comercial: apresente esse diagnóstico diário como uma ferramenta de decisão rápida para o produtor.
         </div>
       </div>
     </div>
@@ -407,8 +508,14 @@
 
   <script>
     const campos = [
-      'sojaKg','sojaQtd','trigoKg','trigoQtd','silagemKg','silagemQtd','racaoKg','racaoQtd','mineralKg','mineralQtd',
-      'remedio','energia','combustivel','manutencao','maoobra','outros','litros','precoVenda'
+      "sojaKg", "sojaQtd",
+      "trigoKg", "trigoQtd",
+      "silagemKg", "silagemQtd",
+      "racaoKg", "racaoQtd",
+      "mineralKg", "mineralQtd",
+      "remedio", "energia", "combustivel",
+      "manutencao", "maoobra", "outros",
+      "litros", "precoVenda"
     ];
 
     function valor(id) {
@@ -417,146 +524,182 @@
     }
 
     function moeda(v) {
-      return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return v.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function descobrirMaiorCusto(custos) {
+      let maiorNome = "-";
+      let maiorValor = -1;
+
+      for (const [nome, val] of Object.entries(custos)) {
+        if (val > maiorValor) {
+          maiorValor = val;
+          maiorNome = nome;
+        }
+      }
+
+      return maiorValor > 0 ? maiorNome : "-";
+    }
+
+    function atualizarDicas(custos, custoTotal, maiorCusto) {
+      const dicas = [];
+      const alimentacao =
+        custos["Soja"] +
+        custos["Trigo / farelos"] +
+        custos["Silagem / silo"] +
+        custos["Outras rações"] +
+        custos["Suplemento mineral"];
+
+      const percAlimentacao = custoTotal > 0 ? (alimentacao / custoTotal) * 100 : 0;
+      const percMaoObra = custoTotal > 0 ? (custos["Mão de obra"] / custoTotal) * 100 : 0;
+      const percSanidade = custoTotal > 0 ? (custos["Remédios / vacinas"] / custoTotal) * 100 : 0;
+
+      if (percAlimentacao >= 50) {
+        dicas.push(
+          `A alimentação representa ${percAlimentacao.toFixed(1).replace(".", ",")}% do custo total diário.`
+        );
+      }
+
+      if (percMaoObra >= 20) {
+        dicas.push(
+          `A mão de obra representa ${percMaoObra.toFixed(1).replace(".", ",")}% do custo total diário.`
+        );
+      }
+
+      if (percSanidade >= 10) {
+        dicas.push(
+          `Sanidade está alta, com ${percSanidade.toFixed(1).replace(".", ",")}% do custo total diário.`
+        );
+      }
+
+      if (maiorCusto !== "-") {
+        dicas.push(`O maior centro de custo atual é: ${maiorCusto}.`);
+      }
+
+      if (dicas.length === 0) {
+        dicas.push("Preencha valores reais por vários dias para ter uma leitura mais confiável.");
+      }
+
+      document.getElementById("dicas").innerHTML = dicas.map(d => `<li>${d}</li>`).join("");
     }
 
     function calcular() {
       const custos = {
-        'Soja': valor('sojaKg') * valor('sojaQtd'),
-        'Trigo / farelos': valor('trigoKg') * valor('trigoQtd'),
-        'Silagem / silo': valor('silagemKg') * valor('silagemQtd'),
-        'Outras rações': valor('racaoKg') * valor('racaoQtd'),
-        'Suplemento mineral': valor('mineralKg') * valor('mineralQtd'),
-        'Remédios / vacinas': valor('remedio'),
-        'Energia elétrica': valor('energia'),
-        'Combustível': valor('combustivel'),
-        'Manutenção': valor('manutencao'),
-        'Mão de obra': valor('maoobra'),
-        'Outros custos': valor('outros')
+        "Soja": valor("sojaKg") * valor("sojaQtd"),
+        "Trigo / farelos": valor("trigoKg") * valor("trigoQtd"),
+        "Silagem / silo": valor("silagemKg") * valor("silagemQtd"),
+        "Outras rações": valor("racaoKg") * valor("racaoQtd"),
+        "Suplemento mineral": valor("mineralKg") * valor("mineralQtd"),
+        "Remédios / vacinas": valor("remedio"),
+        "Energia elétrica": valor("energia"),
+        "Combustível": valor("combustivel"),
+        "Manutenção": valor("manutencao"),
+        "Mão de obra": valor("maoobra"),
+        "Outros custos": valor("outros")
       };
 
-      const litros = valor('litros');
-      const precoVenda = valor('precoVenda');
+      const litros = valor("litros");
+      const precoVenda = valor("precoVenda");
       const custoTotal = Object.values(custos).reduce((a, b) => a + b, 0);
 
       if (litros <= 0) {
-        document.getElementById('statusBox').style.display = 'block';
-        document.getElementById('statusBox').className = 'status warn';
-        document.getElementById('statusBox').innerHTML = 'Informe a quantidade de litros produzidos por dia para calcular corretamente.';
-        document.getElementById('custoPorLitro').textContent = 'R$ 0,00';
-        document.getElementById('custoTotal').textContent = moeda(custoTotal);
-        document.getElementById('receitaTotal').textContent = 'R$ 0,00';
-        document.getElementById('margemLitro').textContent = 'R$ 0,00';
-        document.getElementById('lucroMensal').textContent = 'R$ 0,00';
-        document.getElementById('maiorCusto').textContent = descobrirMaiorCusto(custos);
+        const status = document.getElementById("statusBox");
+        status.style.display = "block";
+        status.className = "status warn";
+        status.innerHTML = "Informe a quantidade de litros produzidos por dia para calcular corretamente.";
+
+        document.getElementById("custoPorLitro").textContent = "R$ 0,00";
+        document.getElementById("custoTotal").textContent = moeda(custoTotal) + " / dia";
+        document.getElementById("receitaTotal").textContent = "R$ 0,00 / dia";
+        document.getElementById("margemLitro").textContent = "R$ 0,00";
+        document.getElementById("lucroMensal").textContent = "R$ 0,00 / dia";
+        document.getElementById("maiorCusto").textContent = descobrirMaiorCusto(custos);
         return;
       }
 
       const custoPorLitro = custoTotal / litros;
       const receitaTotal = litros * precoVenda;
       const margemPorLitro = precoVenda - custoPorLitro;
-      const lucroMensal = receitaTotal - custoTotal;
+      const lucroDiario = receitaTotal - custoTotal;
       const maiorCusto = descobrirMaiorCusto(custos);
 
-      document.getElementById('custoPorLitro').textContent = moeda(custoPorLitro);
-      document.getElementById('custoTotal').textContent = moeda(custoTotal) + ' / dia';
-      document.getElementById('receitaTotal').textContent = moeda(receitaTotal) + ' / dia';
-      document.getElementById('margemLitro').textContent = moeda(margemPorLitro);
-      document.getElementById('lucroMensal').textContent = moeda(lucroMensal) + ' / dia';
-      document.getElementById('maiorCusto').textContent = maiorCusto;
+      document.getElementById("custoPorLitro").textContent = moeda(custoPorLitro);
+      document.getElementById("custoTotal").textContent = moeda(custoTotal) + " / dia";
+      document.getElementById("receitaTotal").textContent = moeda(receitaTotal) + " / dia";
+      document.getElementById("margemLitro").textContent = moeda(margemPorLitro);
+      document.getElementById("lucroMensal").textContent = moeda(lucroDiario) + " / dia";
+      document.getElementById("maiorCusto").textContent = maiorCusto;
 
-      const status = document.getElementById('statusBox');
-      status.style.display = 'block';
+      const status = document.getElementById("statusBox");
+      status.style.display = "block";
 
       if (precoVenda <= 0) {
-        status.className = 'status warn';
-        status.innerHTML = 'O custo por litro foi calculado, mas falta informar o preço de venda para analisar margem e lucro.';
+        status.className = "status warn";
+        status.innerHTML = "O custo por litro foi calculado, mas falta informar o preço de venda para analisar margem e lucro.";
       } else if (margemPorLitro >= 0) {
-        status.className = 'status ok';
+        status.className = "status ok";
         status.innerHTML = `A operação diária está positiva. A margem estimada é de <strong>${moeda(margemPorLitro)}</strong> por litro.`;
       } else {
-        status.className = 'status warn';
+        status.className = "status warn";
         status.innerHTML = `Atenção: a operação diária está no negativo. O prejuízo estimado é de <strong>${moeda(Math.abs(margemPorLitro))}</strong> por litro.`;
       }
 
       atualizarDicas(custos, custoTotal, maiorCusto);
     }
 
-    function descobrirMaiorCusto(custos) {
-      let maiorNome = '-';
-      let maiorValor = -1;
-      for (const [nome, valor] of Object.entries(custos)) {
-        if (valor > maiorValor) {
-          maiorValor = valor;
-          maiorNome = nome;
-        }
-      }
-      return maiorValor > 0 ? maiorNome : '-';
-    }
-
-    function atualizarDicas(custos, custoTotal, maiorCusto) {
-      const dicas = [];
-      const alimentacao = custos['Soja'] + custos['Trigo / farelos'] + custos['Silagem / silo'] + custos['Outras rações'] + custos['Suplemento mineral'];
-      const percAlimentacao = custoTotal > 0 ? (alimentacao / custoTotal) * 100 : 0;
-      const percMaoObra = custoTotal > 0 ? (custos['Mão de obra'] / custoTotal) * 100 : 0;
-      const percSanidade = custoTotal > 0 ? (custos['Remédios / vacinas'] / custoTotal) * 100 : 0;
-
-      if (percAlimentacao >= 50) {
-        dicas.push(`A alimentação representa ${percAlimentacao.toFixed(1).replace('.', ',')}% do custo total. Vale revisar formulação, desperdício e compra de insumos.`);
-      }
-      if (percMaoObra >= 20) {
-        dicas.push(`A mão de obra está pesando ${percMaoObra.toFixed(1).replace('.', ',')}% do custo total.`);
-      }
-      if (percSanidade >= 10) {
-        dicas.push(`Sanidade está alta (${percSanidade.toFixed(1).replace('.', ',')}%). Verifique mastite, descarte e prevenção.`);
-      }
-      if (maiorCusto !== '-') {
-        dicas.push(`O maior centro de custo atual é: ${maiorCusto}.`);
-      }
-      if (dicas.length === 0) {
-        dicas.push('Preencha valores reais por 2 ou 3 meses para gerar uma leitura mais confiável.');
-      }
-
-      document.getElementById('dicas').innerHTML = dicas.map(d => `<li>${d}</li>`).join('');
-    }
-
     function preencherExemplo() {
-      document.getElementById('sojaKg').value = 2.80;
-      document.getElementById('sojaQtd').value = 120;
-      document.getElementById('trigoKg').value = 1.90;
-      document.getElementById('trigoQtd').value = 80;
-      document.getElementById('silagemKg').value = 0.45;
-      document.getElementById('silagemQtd').value = 900;
-      document.getElementById('racaoKg').value = 2.20;
-      document.getElementById('racaoQtd').value = 60;
-      document.getElementById('mineralKg').value = 4.50;
-      document.getElementById('mineralQtd').value = 12;
-      document.getElementById('remedio').value = 35;
-      document.getElementById('energia').value = 60;
-      document.getElementById('combustivel').value = 45;
-      document.getElementById('manutencao').value = 30;
-      document.getElementById('maoobra').value = 220;
-      document.getElementById('outros').value = 40;
-      document.getElementById('litros').value = 1500;
-      document.getElementById('precoVenda').value = 2.12;
+      document.getElementById("sojaKg").value = 5.00;
+      document.getElementById("sojaQtd").value = 2;
+      document.getElementById("trigoKg").value = 2.50;
+      document.getElementById("trigoQtd").value = 2;
+      document.getElementById("silagemKg").value = 0.50;
+      document.getElementById("silagemQtd").value = 15;
+      document.getElementById("racaoKg").value = 0;
+      document.getElementById("racaoQtd").value = 0;
+      document.getElementById("mineralKg").value = 0;
+      document.getElementById("mineralQtd").value = 0;
+      document.getElementById("remedio").value = 0;
+      document.getElementById("energia").value = 0;
+      document.getElementById("combustivel").value = 0;
+      document.getElementById("manutencao").value = 0;
+      document.getElementById("maoobra").value = 0;
+      document.getElementById("outros").value = 0;
+      document.getElementById("litros").value = 120;
+      document.getElementById("precoVenda").value = 2.10;
       calcular();
     }
 
     function limparCampos() {
-      campos.forEach(id => document.getElementById(id).value = '');
-      document.getElementById('custoPorLitro').textContent = 'R$ 0,00';
-      document.getElementById('custoTotal').textContent = 'R$ 0,00';
-      document.getElementById('receitaTotal').textContent = 'R$ 0,00';
-      document.getElementById('margemLitro').textContent = 'R$ 0,00';
-      document.getElementById('lucroMensal').textContent = 'R$ 0,00';
-      document.getElementById('maiorCusto').textContent = '-';
-      document.getElementById('statusBox').style.display = 'none';
-      document.getElementById('dicas').innerHTML = `
-        <li>Preencha todos os custos mensais que impactam a ordenha.</li>
-        <li>Alimentação costuma ser o item mais pesado.</li>
-        <li>Sem produção em litros, não existe custo por litro confiável.</li>
+      campos.forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("custoPorLitro").textContent = "R$ 0,00";
+      document.getElementById("custoTotal").textContent = "R$ 0,00 / dia";
+      document.getElementById("receitaTotal").textContent = "R$ 0,00 / dia";
+      document.getElementById("margemLitro").textContent = "R$ 0,00";
+      document.getElementById("lucroMensal").textContent = "R$ 0,00 / dia";
+      document.getElementById("maiorCusto").textContent = "-";
+
+      const status = document.getElementById("statusBox");
+      status.style.display = "none";
+      status.className = "status";
+
+      document.getElementById("dicas").innerHTML = `
+        <li>Informe a alimentação com preço por kg e quantidade consumida por dia.</li>
+        <li>Os demais custos devem ser lançados no formato diário.</li>
+        <li>Sem litros produzidos por dia, o custo por litro não fica confiável.</li>
       `;
+
+      document.getElementById("sojaKg").focus();
     }
+
+    window.addEventListener("load", () => {
+      document.getElementById("sojaKg").focus();
+    });
   </script>
 </body>
 </html>
