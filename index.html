@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dairy Management - Eficiência por Animal</title>
+    <title>MILK PRO - Gestão de Precisão</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #050505; color: #e4e4e7; font-family: 'Inter', sans-serif; }
+        body { background-color: #050505; color: #e4e4e7; font-family: sans-serif; }
         .card-panel { background-color: #0f0f0f; border: 1px solid #27272a; border-radius: 1rem; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .input-banco { background-color: #18181b; border: 1px solid #3f3f46; color: #fff; text-align: right; font-family: monospace; }
@@ -17,62 +17,139 @@
 
     <header class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-zinc-900/50">
         <div class="flex items-center gap-4">
-            <span class="text-green-500 font-black italic tracking-tighter text-xl">MILK PRO</span>
-            <select id="fazenda" class="bg-transparent border-none text-zinc-400 font-bold text-sm uppercase cursor-pointer outline-none hover:text-white">
-                <option value="fazenda1">Fazenda Santa Luzia</option>
-                <option value="fazenda2">Fazenda Boa Vista</option>
-            </select>
+            <span class="text-green-500 font-black italic text-xl">MILK PRO</span>
+            <span class="text-zinc-600 text-xs">| DASHBOARD DE PRECISÃO</span>
         </div>
-        <div id="relogio" class="text-zinc-500 text-xs font-mono uppercase tracking-widest"></div>
+        <div id="relogio" class="text-zinc-500 text-xs font-mono uppercase"></div>
     </header>
 
     <main class="flex-1 grid grid-cols-12 gap-4 p-4">
         
-        <section class="col-span-3 card-panel p-5 flex flex-col gap-6">
+        <section class="col-span-3 card-panel p-5 flex flex-col gap-4">
+            <h2 class="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Métricas por Vaca</h2>
+            
             <div>
-                <h2 class="text-zinc-500 text-[10px] font-black uppercase mb-4 tracking-widest">Métricas do Rebanho</h2>
-                <label class="text-[10px] text-zinc-400 block mb-1 uppercase">Média de Leite (L / Vaca)</label>
-                <input type="text" id="mediaLeite" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-3 rounded-lg text-2xl">
+                <label class="text-[10px] text-zinc-400 block mb-1">MÉDIA LEITE (L/VACA)</label>
+                <input type="text" id="mediaLeite" oninput="mask(this)" placeholder="0,00" class="input-banco w-full p-3 rounded-lg text-2xl">
             </div>
 
-            <div class="space-y-4">
-                <h2 class="text-zinc-500 text-[10px] font-black uppercase mb-2 tracking-widest">Consumo e Preços</h2>
-                
+            <div class="space-y-3">
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">SOJA (KG/VACA)</label>
-                        <input type="text" id="kgSoja" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
+                        <label class="text-[9px] text-zinc-500 block mb-1 uppercase">KG Soja</label>
+                        <input type="text" id="kgSoja" oninput="mask(this)" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
                     </div>
                     <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG SOJA</label>
-                        <input type="text" id="precoSoja" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
+                        <label class="text-[9px] text-zinc-500 block mb-1 uppercase">Preço KG</label>
+                        <input type="text" id="precoSoja" oninput="mask(this)" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">TRIGO (KG/VACA)</label>
-                        <input type="text" id="kgTrigo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
+                        <label class="text-[9px] text-zinc-500 block mb-1 uppercase">KG Trigo</label>
+                        <input type="text" id="kgTrigo" oninput="mask(this)" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
                     </div>
                     <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG TRIGO</label>
-                        <input type="text" id="precoTrigo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">SILAGEM (KG/VACA)</label>
-                        <input type="text" id="kgSilo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg">
-                    </div>
-                    <div>
-                        <label class="text-[9px] text-zinc-500 block mb-1">R$ / KG SILO</label>
-                        <input type="text" id="precoSilo" oninput="mask(this); calc()" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
+                        <label class="text-[9px] text-zinc-500 block mb-1 uppercase">Preço KG</label>
+                        <input type="text" id="precoTrigo" oninput="mask(this)" placeholder="0,00" class="input-banco w-full p-2 rounded text-lg text-yellow-500">
                     </div>
                 </div>
             </div>
 
-            <div class="mt-auto p-3 bg-zinc-900/50 rounded-lg text-center border border-zinc-800">
-                <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest">Cálculo de Precisão Alimentar</p>
+            <button onclick="calc()" class="mt-auto bg-green-600 hover:bg-green-500 text-white font-black py-4 rounded-xl transition-all active:scale-95 uppercase tracking-widest text-sm shadow-lg shadow-green-900/20">
+                Calcular Eficiência
+            </button>
+        </section>
+
+        <section class="col-span-9 flex flex-col gap-4">
+            <div id="cardPrincipal" class="flex-1 card-panel flex flex-col items-center justify-center relative">
+                <span class="text-zinc-500 font-bold uppercase text-xs tracking-widest mb-4">Custo Alimentar / Litro</span>
+                <div class="flex items-baseline">
+                    <span class="text-4xl text-zinc-600 font-light mr-4">R$</span>
+                    <span id="displayCusto" class="text-[12rem] font-black leading-none tracking-tighter">0,00</span>
+                </div>
+                <div id="statusTag" class="mt-8 px-8 py-2 rounded-full text-xs font-black uppercase tracking-widest bg-zinc-800 text-zinc-500">
+                    Clique em calcular para processar
+                </div>
+            </div>
+
+            <div class="h-32 grid grid-cols-2 gap-4">
+                <div class="card-panel p-6 flex flex-col justify-center">
+                    <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Custo Total Vaca/Dia</span>
+                    <span id="totalVaca" class="text-4xl font-mono font-bold text-white">R$ 0,00</span>
+                </div>
+                <div class="card-panel p-6 flex flex-col justify-center border-l-4 border-l-blue-600">
+                    <span class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Margem Prevista p/ Litro</span>
+                    <span id="margemEst" class="text-4xl font-mono font-bold text-blue-500">R$ 0,00</span>
+                </div>
             </div>
         </section>
+    </main>
+
+    <script>
+        // Máscara de Moeda
+        function mask(i) {
+            let v = i.value.replace(/\D/g,'');
+            v = (v/100).toFixed(2) + '';
+            v = v.replace(".", ",");
+            v = v.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+            v = v.replace(/(\d)(\d{3}),/g, "$1.$2,");
+            i.value = v;
+        }
+
+        function toFloat(v) {
+            if(!v) return 0;
+            // Remove pontos de milhar e troca vírgula por ponto
+            return parseFloat(v.replace(/\./g, '').replace(',', '.'));
+        }
+
+        function calc() {
+            // Pegando os valores
+            const media = toFloat(document.getElementById('mediaLeite').value);
+            const kgSoja = toFloat(document.getElementById('kgSoja').value);
+            const pSoja = toFloat(document.getElementById('precoSoja').value);
+            const kgTrigo = toFloat(document.getElementById('kgTrigo').value);
+            const pTrigo = toFloat(document.getElementById('precoTrigo').value);
+
+            // Cálculos
+            const custoSoja = kgSoja * pSoja;
+            const custoTrigo = kgTrigo * pTrigo;
+            const custoTotalVaca = custoSoja + custoTrigo;
+            const custoLitro = media > 0 ? (custoTotalVaca / media) : 0;
+
+            // Simulação Preço Leite Recebido (R$ 2.45)
+            const precoLeite = 2.45;
+            const margem = media > 0 ? (precoLeite - custoLitro) : 0;
+
+            // Atualização Visual
+            document.getElementById('displayCusto').innerText = custoLitro.toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('totalVaca').innerText = "R$ " + custoTotalVaca.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+            document.getElementById('margemEst').innerText = "R$ " + margem.toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+            // Feedback de Status
+            const tag = document.getElementById('statusTag');
+            const card = document.getElementById('cardPrincipal');
+
+            if(custoLitro > 0) {
+                if(custoLitro > 2.00) {
+                    tag.innerText = "ALTA PROXIMIDADE DO PREÇO DE VENDA";
+                    tag.className = "mt-8 px-8 py-2 rounded-full text-xs font-black bg-red-900 text-red-200";
+                    card.style.borderColor = "#7f1d1d";
+                } else {
+                    tag.innerText = "OPERANDO COM EFICIÊNCIA";
+                    tag.className = "mt-8 px-8 py-2 rounded-full text-xs font-black bg-green-900 text-green-200";
+                    card.style.borderColor = "#064e3b";
+                }
+            }
+        }
+
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('relogio').innerText = now.toLocaleTimeString('pt-br');
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
