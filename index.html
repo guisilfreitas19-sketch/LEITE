@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>LeitePro v3.5 | Projeção Mensal</title>
+  <title>LeitePro v3.6 | Tempo Real</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #020617; color: #f8fafc; font-family: sans-serif; }
     .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-radius: 1.5rem; }
-    .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.8rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.25rem; }
-    .input-field:focus { border-color: #facc15; outline: none; background: #0f172a; }
+    .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.8rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.25rem; transition: all 0.2s; }
+    .input-field:focus { border-color: #facc15; outline: none; background: #0f172a; box-shadow: 0 0 15px rgba(250, 204, 21, 0.2); }
     .label-text { color: #94a3b8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.3rem; display: block; }
     .status-verde { color: #22c55e; }
     .status-vermelho { color: #ef4444; }
@@ -20,60 +20,46 @@
     
     <aside class="lg:col-span-4 space-y-4">
       <div class="glass-card p-6 border-l-4 border-yellow-500">
-        <h2 class="font-black text-xl mb-4 italic text-yellow-500">PRODUÇÃO E VENDA</h2>
+        <h2 class="font-black text-xl mb-4 italic text-yellow-500 text-center">PAINEL DE CONTROLE</h2>
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label class="label-text">Vacas no Lote</label>
-            <input id="numVacas" type="number" value="20" oninput="calcular()" class="input-field">
+            <label class="label-text">Vacas Lote</label>
+            <input id="numVacas" type="number" value="20" onkeyup="calcular()" oninput="calcular()" class="input-field">
           </div>
           <div>
             <label class="label-text">Média L/Vaca</label>
-            <input id="mediaVaca" type="number" value="10" oninput="calcular()" class="input-field">
+            <input id="mediaVaca" type="number" value="10" onkeyup="calcular()" oninput="calcular()" class="input-field">
           </div>
         </div>
-        <label class="label-text text-yellow-400">Preço Venda (R$/Litro)</label>
-        <input id="vendaPreco" type="text" placeholder="R$ 0,00" oninput="fMoeda(this)" class="input-field !text-3xl text-yellow-500 border-yellow-900/50">
+        <label class="label-text text-yellow-400 text-center">Preço Venda (R$/Litro)</label>
+        <input id="vendaPreco" type="text" placeholder="R$ 0,00" onkeyup="fMoeda(this)" class="input-field !text-3xl text-yellow-500 border-yellow-900/50">
       </div>
 
       <div class="glass-card p-6">
-        <h3 class="label-text mb-4 text-blue-400">Trato Individual (KG e Preço)</h3>
-        <div class="space-y-3">
-          <div class="grid grid-cols-2 gap-2"><input id="siloQtd" type="number" placeholder="Silo KG" oninput="calcular()" class="input-field !text-base"><input id="siloPreco" type="text" placeholder="Preço Silo" oninput="fMoeda(this)" class="input-field !text-base"></div>
-          <div class="grid grid-cols-2 gap-2"><input id="sojaQtd" type="number" placeholder="Soja KG" oninput="calcular()" class="input-field !text-base"><input id="sojaPreco" type="text" placeholder="Preço Soja" oninput="fMoeda(this)" class="input-field !text-base"></div>
-          <div class="grid grid-cols-2 gap-2"><input id="trigoQtd" type="number" placeholder="Trigo KG" oninput="calcular()" class="input-field !text-base"><input id="trigoPreco" type="text" placeholder="Preço Trigo" oninput="fMoeda(this)" class="input-field !text-base"></div>
+        <h3 class="label-text mb-4 text-blue-400">Trato (Individual)</h3>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-2">
+            <input id="siloQtd" type="number" placeholder="Silo KG" onkeyup="calcular()" oninput="calcular()" class="input-field !text-base">
+            <input id="siloPreco" type="text" placeholder="Preço Silo" onkeyup="fMoeda(this)" class="input-field !text-base">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="sojaQtd" type="number" placeholder="Soja KG" onkeyup="calcular()" oninput="calcular()" class="input-field !text-base">
+            <input id="sojaPreco" type="text" placeholder="Preço Soja" onkeyup="fMoeda(this)" class="input-field !text-base">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <input id="trigoQtd" type="number" placeholder="Trigo KG" onkeyup="calcular()" oninput="calcular()" class="input-field !text-base">
+            <input id="trigoPreco" type="text" placeholder="Preço Trigo" onkeyup="fMoeda(this)" class="input-field !text-base">
+          </div>
         </div>
       </div>
     </aside>
 
     <main class="lg:col-span-8 flex flex-col gap-6">
-      
-      <div class="glass-card p-8 flex flex-col items-center justify-center relative overflow-hidden flex-1">
-        <span class="label-text tracking-[0.4em] mb-2 text-zinc-500">Lucro Líquido do Lote (Dia)</span>
+      <div class="glass-card p-8 flex flex-col items-center justify-center relative flex-1">
+        <span class="label-text tracking-[0.4em] mb-2 text-zinc-500">Lucro Diário Líquido</span>
         <div class="flex items-baseline">
           <span class="text-4xl text-zinc-700 font-light mr-4">R$</span>
           <span id="resLucroDia" class="text-[10rem] font-black leading-none tracking-tighter">0,00</span>
         </div>
-        <div class="absolute top-6 right-8 text-right">
-          <p class="label-text">Produção Total</p>
-          <p id="totalLitros" class="text-2xl font-black text-green-500">200 L/Dia</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="glass-card p-6 border-b-4 border-green-600">
-          <span class="label-text text-green-500">Previsão Lucro Mensal (30 dias)</span>
-          <p id="resLucroMes" class="text-6xl font-black mt-2">R$ 0,00</p>
-          <p class="text-[10px] text-zinc-500 mt-2">Descontando apenas os custos do trato inseridos.</p>
-        </div>
-
-        <div class="glass-card p-6 border-b-4 border-blue-600">
-          <span class="label-text text-blue-500">Faturamento Bruto Mensal</span>
-          <p id="resFaturaMes" class="text-6xl font-black mt-2 text-zinc-300">R$ 0,00</p>
-          <p class="text-[10px] text-zinc-500 mt-2">Total recebido do laticínio sem descontar gastos.</p>
-        </div>
-      </div>
-
-      <div class="glass-card p-4 grid grid-cols-3 gap-4 text-center">
-        <div><p class="label-text">Custo/Litro</p><p id="resCustoL" class="font-bold text-xl">R$ 0,00</p></div>
-        <div><p class="label-text">Sobra/Litro</p><p id="resSobraL" class="font-bold text-xl text-yellow-500">R$ 0,00</p></div>
-        <div><p class="label-text">Custo Mensal Trato</p><p id="resCustoMes" class="font
+        <div class="absolute top-6 right-8 text-right bg-black/30 px-4 py-2 rounded-xl">
+          <p class
