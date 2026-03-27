@@ -3,16 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LeitePro v4.1 | Gestão Completa</title>
+  <title>LeitePro v4.2 | Ponto de Equilíbrio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #020617; color: #f8fafc; font-family: sans-serif; overflow: hidden; }
     .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-radius: 1.5rem; }
-    .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.6rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.1rem; }
+    .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.5rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.1rem; }
     .input-field:focus { border-color: #facc15; outline: none; }
     .label-text { color: #94a3b8; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.2rem; display: block; }
     .status-verde { color: #22c55e; }
     .status-vermelho { color: #ef4444; }
+    .bg-alerta { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); }
   </style>
 </head>
 <body class="p-4 md:p-6">
@@ -23,15 +24,15 @@
       <div class="glass-card p-5 border-l-4 border-yellow-500">
         <h2 class="font-black text-lg mb-3 italic text-yellow-500 uppercase text-center">Produção</h2>
         <div class="grid grid-cols-2 gap-3 mb-3">
-          <div><label class="label-text">Vacas</label><input id="numVacas" type="number" value="20" oninput="executarCalculo()" class="input-field"></div>
-          <div><label class="label-text">Média L/Vaca</label><input id="mediaVaca" type="number" value="10" oninput="executarCalculo()" class="input-field"></div>
+          <div><label class="label-text">Vacas Lote</label><input id="numVacas" type="number" value="20" oninput="executarCalculo()" class="input-field"></div>
+          <div><label class="label-text">Média L/Vaca</label><input id="mediaVaca" type="number" value="10" oninput="executarCalculo()" class="input-field text-yellow-500 font-bold"></div>
         </div>
-        <label class="label-text text-yellow-400">Preço Venda (Litro)</label>
+        <label class="label-text text-yellow-400">Preço Venda (R$/L)</label>
         <input id="vendaPreco" type="text" value="R$ 2,20" oninput="fMoeda(this)" class="input-field !text-2xl text-yellow-500 font-bold">
       </div>
 
       <div class="glass-card p-5 border-l-4 border-blue-500">
-        <h3 class="label-text mb-4 text-blue-400 italic text-center text-sm">Custos por Animal (Diário)</h3>
+        <h3 class="label-text mb-4 text-blue-400 italic text-center">Dieta e Extras (Por Animal)</h3>
         <div class="space-y-3">
           <div class="grid grid-cols-2 gap-2">
             <div><label class="label-text text-[10px]">Silo KG</label><input id="siloQtd" type="number" value="15" oninput="executarCalculo()" class="input-field"></div>
@@ -45,10 +46,9 @@
             <div><label class="label-text text-[10px]">Trigo KG</label><input id="trigoQtd" type="number" value="2" oninput="executarCalculo()" class="input-field"></div>
             <div><label class="label-text text-[10px]">Preço Trigo</label><input id="trigoPreco" type="text" value="R$ 1,50" oninput="fMoeda(this)" class="input-field"></div>
           </div>
-          
           <div class="pt-2 border-t border-white/10">
-            <label class="label-text text-orange-400">Medicamentos/Extras (R$/Vaca/Dia)</label>
-            <input id="extraCusto" type="text" value="R$ 0,50" oninput="fMoeda(this)" class="input-field !text-orange-400 border-orange-900/30">
+            <label class="label-text text-orange-400">Medicamentos/Outros (R$/Dia)</label>
+            <input id="extraCusto" type="text" value="R$ 0,50" oninput="fMoeda(this)" class="input-field !text-orange-400">
           </div>
         </div>
       </div>
@@ -56,11 +56,24 @@
 
     <main class="lg:col-span-8 flex flex-col gap-5">
       <div class="glass-card p-6 flex flex-col items-center justify-center relative flex-1 min-h-[300px]">
-        <span class="label-text tracking-[0.4em] mb-1 text-zinc-500">Lucro Diário Líquido</span>
+        <span class="label-text tracking-[0.4em] mb-1 text-zinc-500 text-center">Lucro Diário Líquido do Lote</span>
         <div class="flex items-baseline">
           <span class="text-3xl text-zinc-700 font-light mr-3">R$</span>
           <span id="resLucroDia" class="text-[9rem] font-black leading-none tracking-tighter">0,00</span>
         </div>
+        
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-white/5 border border-white/10 px-6 py-2 rounded-full flex gap-8 items-center">
+            <div class="text-center">
+                <p class="label-text !mb-0 text-[9px]">Ponto de Equilíbrio</p>
+                <p id="resBreakEven" class="text-xl font-black text-white">0.00 L</p>
+            </div>
+            <div class="h-8 w-[1px] bg-white/10"></div>
+            <div class="text-center">
+                <p class="label-text !mb-0 text-[9px]">Sobra p/ Vaca</p>
+                <p id="resSobraVaca" class="text-xl font-black text-yellow-500">0.00 L</p>
+            </div>
+        </div>
+
         <div class="absolute top-4 right-6 text-right bg-black/40 px-5 py-2 rounded-2xl border border-white/5">
           <p class="label-text">Produção Lote</p>
           <p id="totalLitros" class="text-2xl font-black text-green-500">0 L/DIA</p>
@@ -69,19 +82,19 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="glass-card p-5 border-b-4 border-green-600 bg-green-500/5 text-center">
-          <span class="label-text text-green-500">Lucro Mensal (30 dias)</span>
+          <span class="label-text text-green-500">Lucro Estimado Mensal</span>
           <p id="resLucroMes" class="text-5xl font-black mt-1">R$ 0,00</p>
         </div>
         <div class="glass-card p-5 border-b-4 border-blue-600 text-center">
-          <span class="label-text text-blue-500">Faturamento Bruto</span>
+          <span class="label-text text-blue-500">Faturamento Mensal</span>
           <p id="resFaturaMes" class="text-5xl font-black mt-1 text-zinc-400">R$ 0,00</p>
         </div>
       </div>
 
       <div class="glass-card p-4 grid grid-cols-3 gap-3 text-center">
-        <div><p class="label-text">Custo/Litro</p><p id="resCustoL" class="font-bold text-xl">R$ 0,00</p></div>
-        <div><p class="label-text text-yellow-500">Sobra/Litro</p><p id="resSobraL" class="font-bold text-xl text-yellow-500">R$ 0,00</p></div>
-        <div><p class="label-text text-red-400">Gasto Mensal Total</p><p id="resCustoMes" class="font-bold text-xl text-red-400">R$ 0,00</p></div>
+        <div><p class="label-text">Custo Real/Litro</p><p id="resCustoL" class="font-bold text-xl text-red-400">R$ 0,00</p></div>
+        <div><p class="label-text text-yellow-500">Sobra Real/Litro</p><p id="resSobraL" class="font-bold text-xl text-yellow-500">R$ 0,00</p></div>
+        <div><p class="label-text">Custo do Trato Mensal</p><p id="resCustoMes" class="font-bold text-xl">R$ 0,00</p></div>
       </div>
     </main>
   </div>
@@ -110,24 +123,31 @@
       const tLitrosDia = nV * mV;
       document.getElementById('totalLitros').innerText = tLitrosDia.toLocaleString('pt-BR') + " L/DIA";
 
-      // Soma do trato + custo extra (remédio)
-      const custoDietaVaca = 
+      const custoIndividual = 
         (parseFloat(document.getElementById('siloQtd').value) || 0) * limpar(document.getElementById('siloPreco').value) +
         (parseFloat(document.getElementById('sojaQtd').value) || 0) * limpar(document.getElementById('sojaPreco').value) +
-        (parseFloat(document.getElementById('trigoQtd').value) || 0) * limpar(document.getElementById('trigoPreco').value);
+        (parseFloat(document.getElementById('trigoQtd').value) || 0) * limpar(document.getElementById('trigoPreco').value) +
+        limpar(document.getElementById('extraCusto').value);
 
-      const custoExtraPorVaca = limpar(document.getElementById('extraCusto').value);
-      
-      const custoTotalVacaDia = custoDietaVaca + custoExtraPorVaca;
-      const gastoLoteDia = custoTotalVacaDia * nV;
+      const gastoLoteDia = custoIndividual * nV;
       const faturaLoteDia = tLitrosDia * pV;
       const lucroLoteDia = faturaLoteDia - gastoLoteDia;
       
       const custoLitro = tLitrosDia > 0 ? (gastoLoteDia / tLitrosDia) : 0;
       const sobraLitro = pV - custoLitro;
 
+      // CÁLCULO PONTO DE EQUILÍBRIO (BREAK-EVEN)
+      // Litros necessários p/ pagar o custo de 1 vaca
+      const breakEvenLitros = pV > 0 ? (custoIndividual / pV) : 0;
+      const sobraLitrosVaca = mV - breakEvenLitros;
+
       const f = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
       
+      // Interface
+      document.getElementById('resBreakEven').innerText = breakEvenLitros.toLocaleString('pt-BR', f) + " L";
+      document.getElementById('resSobraVaca').innerText = (sobraLitrosVaca > 0 ? "+" : "") + sobraLitrosVaca.toLocaleString('pt-BR', f) + " L";
+      document.getElementById('resSobraVaca').className = "text-xl font-black " + (sobraLitrosVaca >= 0 ? "text-yellow-500" : "text-red-500");
+
       const elLucro = document.getElementById('resLucroDia');
       elLucro.innerText = Math.abs(lucroLoteDia).toLocaleString('pt-BR', f);
       elLucro.className = (lucroLoteDia >= 0 ? "status-verde" : "status-vermelho") + " text-[9rem] font-black leading-none tracking-tighter";
