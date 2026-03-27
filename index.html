@@ -2,142 +2,78 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>LeitePro v3.4 | Gestão de Lucro</title>
+  <title>LeitePro v3.5 | Projeção Mensal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { background-color: #020617; color: #f8fafc; font-family: sans-serif; }
     .glass-card { background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(12px); border-radius: 1.5rem; }
     .input-field { background: #1e293b; border: 2px solid #334155; color: #fff; border-radius: 0.75rem; padding: 0.8rem; width: 100%; text-align: right; font-family: monospace; font-size: 1.25rem; }
-    .input-field:focus { border-color: #facc15; outline: none; }
+    .input-field:focus { border-color: #facc15; outline: none; background: #0f172a; }
     .label-text { color: #94a3b8; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.3rem; display: block; }
-    .lucro-positivo { color: #22c55e; }
-    .lucro-negativo { color: #ef4444; }
+    .status-verde { color: #22c55e; }
+    .status-vermelho { color: #ef4444; }
   </style>
 </head>
 <body class="p-4 md:p-8">
 
   <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
     
-    <aside class="lg:col-span-5 space-y-4">
-      
+    <aside class="lg:col-span-4 space-y-4">
       <div class="glass-card p-6 border-l-4 border-yellow-500">
         <h2 class="font-black text-xl mb-4 italic text-yellow-500">PRODUÇÃO E VENDA</h2>
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <label class="label-text">Total de Vacas</label>
+            <label class="label-text">Vacas no Lote</label>
             <input id="numVacas" type="number" value="20" oninput="calcular()" class="input-field">
           </div>
           <div>
-            <label class="label-text">Média Litros/Vaca</label>
+            <label class="label-text">Média L/Vaca</label>
             <input id="mediaVaca" type="number" value="10" oninput="calcular()" class="input-field">
           </div>
         </div>
-        <div class="pt-4 border-t border-white/10">
-          <label class="label-text text-yellow-400">Preço de Venda (R$ por Litro)</label>
-          <input id="vendaPreco" type="text" placeholder="R$ 0,00" oninput="fMoeda(this)" class="input-field !text-3xl text-yellow-500 border-yellow-900/50">
-        </div>
+        <label class="label-text text-yellow-400">Preço Venda (R$/Litro)</label>
+        <input id="vendaPreco" type="text" placeholder="R$ 0,00" oninput="fMoeda(this)" class="input-field !text-3xl text-yellow-500 border-yellow-900/50">
       </div>
 
       <div class="glass-card p-6">
-        <h3 class="label-text mb-4 text-blue-400">Custos do Trato (Individual)</h3>
-        
+        <h3 class="label-text mb-4 text-blue-400">Trato Individual (KG e Preço)</h3>
         <div class="space-y-3">
-          <div class="grid grid-cols-2 gap-3 p-2 bg-white/5 rounded-lg">
-            <input id="siloQtd" type="number" placeholder="Silo KG" oninput="calcular()" class="input-field !text-base">
-            <input id="siloPreco" type="text" placeholder="Preço KG" oninput="fMoeda(this)" class="input-field !text-base">
-          </div>
-          <div class="grid grid-cols-2 gap-3 p-2 bg-white/5 rounded-lg">
-            <input id="sojaQtd" type="number" placeholder="Soja KG" oninput="calcular()" class="input-field !text-base">
-            <input id="sojaPreco" type="text" placeholder="Preço KG" oninput="fMoeda(this)" class="input-field !text-base">
-          </div>
-          <div class="grid grid-cols-2 gap-3 p-2 bg-white/5 rounded-lg">
-            <input id="trigoQtd" type="number" placeholder="Trigo KG" oninput="calcular()" class="input-field !text-base">
-            <input id="trigoPreco" type="text" placeholder="Preço KG" oninput="fMoeda(this)" class="input-field !text-base">
-          </div>
+          <div class="grid grid-cols-2 gap-2"><input id="siloQtd" type="number" placeholder="Silo KG" oninput="calcular()" class="input-field !text-base"><input id="siloPreco" type="text" placeholder="Preço Silo" oninput="fMoeda(this)" class="input-field !text-base"></div>
+          <div class="grid grid-cols-2 gap-2"><input id="sojaQtd" type="number" placeholder="Soja KG" oninput="calcular()" class="input-field !text-base"><input id="sojaPreco" type="text" placeholder="Preço Soja" oninput="fMoeda(this)" class="input-field !text-base"></div>
+          <div class="grid grid-cols-2 gap-2"><input id="trigoQtd" type="number" placeholder="Trigo KG" oninput="calcular()" class="input-field !text-base"><input id="trigoPreco" type="text" placeholder="Preço Trigo" oninput="fMoeda(this)" class="input-field !text-base"></div>
         </div>
       </div>
     </aside>
 
-    <main class="lg:col-span-7 glass-card p-8 flex flex-col justify-between relative overflow-hidden">
-       
-       <div class="text-center mt-4">
-         <span class="label-text tracking-[0.4em] mb-2">Lucro Líquido do Lote (Dia)</span>
-         <div class="flex items-baseline justify-center">
-           <span class="text-4xl text-zinc-700 font-light mr-4">R$</span>
-           <span id="resLucroTotal" class="text-[10rem] font-black leading-none tracking-tighter">0,00</span>
-         </div>
-       </div>
-       
-       <div class="grid grid-cols-3 gap-4 w-full mt-12 border-t border-zinc-800 pt-8">
-          <div class="text-center">
-            <p class="label-text">Custo/Litro</p>
-            <p id="resCustoLitro" class="text-3xl font-bold text-zinc-300">R$ 0,00</p>
-          </div>
-          <div class="text-center">
-            <p class="label-text text-yellow-500">Sobra/Litro</p>
-            <p id="resSobraLitro" class="text-3xl font-bold text-yellow-500">R$ 0,00</p>
-          </div>
-          <div class="text-center">
-            <p class="label-text">Gasto Total Lote</p>
-            <p id="resGastoTotal" class="text-3xl font-bold text-red-400">R$ 0,00</p>
-          </div>
-       </div>
-
-       <div class="absolute top-6 right-6 bg-green-500/10 border border-green-500/20 px-4 py-2 rounded-full">
-         <span id="totalLitros" class="text-green-500 font-black">200 LITROS/DIA</span>
-       </div>
-    </main>
-  </div>
-
-  <script>
-    function fMoeda(i) {
-      let v = i.value.replace(/\D/g, "");
-      if (v.length === 0) { i.value = ""; calcular(); return; }
-      v = (parseInt(v) / 100).toFixed(2).replace(".", ",");
-      v = v.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      i.value = "R$ " + v;
-      calcular();
-    }
-
-    function limpar(v) {
-      if (!v) return 0;
-      let n = v.replace("R$", "").replace(/\./g, "").replace(",", ".").trim();
-      return parseFloat(n) || 0;
-    }
-
-    function calcular() {
-      const nVacas = parseFloat(document.getElementById('numVacas').value) || 0;
-      const mediaL = parseFloat(document.getElementById('mediaVaca').value) || 0;
-      const precoVenda = limpar(document.getElementById('vendaPreco').value);
+    <main class="lg:col-span-8 flex flex-col gap-6">
       
-      const tLitros = nVacas * mediaL;
-      document.getElementById('totalLitros').innerText = tLitros.toLocaleString('pt-BR') + " LITROS/DIA";
+      <div class="glass-card p-8 flex flex-col items-center justify-center relative overflow-hidden flex-1">
+        <span class="label-text tracking-[0.4em] mb-2 text-zinc-500">Lucro Líquido do Lote (Dia)</span>
+        <div class="flex items-baseline">
+          <span class="text-4xl text-zinc-700 font-light mr-4">R$</span>
+          <span id="resLucroDia" class="text-[10rem] font-black leading-none tracking-tighter">0,00</span>
+        </div>
+        <div class="absolute top-6 right-8 text-right">
+          <p class="label-text">Produção Total</p>
+          <p id="totalLitros" class="text-2xl font-black text-green-500">200 L/Dia</p>
+        </div>
+      </div>
 
-      // Custos
-      const cVaca = (parseFloat(document.getElementById('siloQtd').value) || 0) * limpar(document.getElementById('siloPreco').value) +
-                    (parseFloat(document.getElementById('sojaQtd').value) || 0) * limpar(document.getElementById('sojaPreco').value) +
-                    (parseFloat(document.getElementById('trigoQtd').value) || 0) * limpar(document.getElementById('trigoPreco').value);
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card p-6 border-b-4 border-green-600">
+          <span class="label-text text-green-500">Previsão Lucro Mensal (30 dias)</span>
+          <p id="resLucroMes" class="text-6xl font-black mt-2">R$ 0,00</p>
+          <p class="text-[10px] text-zinc-500 mt-2">Descontando apenas os custos do trato inseridos.</p>
+        </div>
 
-      const gastoLote = cVaca * nVacas;
-      const faturaLote = tLitros * precoVenda;
-      const lucroLote = faturaLote - gastoLote;
-      
-      const custoLitro = tLitros > 0 ? (gastoLote / tLitros) : 0;
-      const sobraLitro = precoVenda - custoLitro;
+        <div class="glass-card p-6 border-b-4 border-blue-600">
+          <span class="label-text text-blue-500">Faturamento Bruto Mensal</span>
+          <p id="resFaturaMes" class="text-6xl font-black mt-2 text-zinc-300">R$ 0,00</p>
+          <p class="text-[10px] text-zinc-500 mt-2">Total recebido do laticínio sem descontar gastos.</p>
+        </div>
+      </div>
 
-      // Exibição Principal (Lucro)
-      const elLucro = document.getElementById('resLucroTotal');
-      elLucro.innerText = Math.abs(lucroLote).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-      elLucro.className = lucroLote >= 0 ? "text-[10rem] font-black leading-none tracking-tighter lucro-positivo" : "text-[10rem] font-black leading-none tracking-tighter lucro-negativo";
-
-      // Detalhes inferiores
-      const f = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
-      document.getElementById('resCustoLitro').innerText = "R$ " + custoLitro.toLocaleString('pt-BR', f);
-      document.getElementById('resSobraLitro').innerText = "R$ " + (sobraLitro > 0 ? sobraLitro : 0).toLocaleString('pt-BR', f);
-      document.getElementById('resGastoTotal').innerText = "R$ " + gastoLote.toLocaleString('pt-BR', f);
-    }
-
-    window.onload = calcular;
-  </script>
-</body>
-</html>
+      <div class="glass-card p-4 grid grid-cols-3 gap-4 text-center">
+        <div><p class="label-text">Custo/Litro</p><p id="resCustoL" class="font-bold text-xl">R$ 0,00</p></div>
+        <div><p class="label-text">Sobra/Litro</p><p id="resSobraL" class="font-bold text-xl text-yellow-500">R$ 0,00</p></div>
+        <div><p class="label-text">Custo Mensal Trato</p><p id="resCustoMes" class="font
